@@ -1,0 +1,28 @@
+# Core
+jupyterlab==4.0.9
+pyspark==3.5.1
+
+# Data Processing
+pandas==2.0.3
+numpy==1.24.4
+pyarrow==14.0.1
+
+# Delta Lake
+delta-spark==3.0.0
+
+# Database
+psycopg2-binary==2.9.9
+sqlalchemy==2.0.45
+
+# Visualization
+matplotlib
+seaborn
+plotly
+
+# AWS/S3
+boto3
+s3fs
+
+# Utilities
+python-dotenv
+ipython

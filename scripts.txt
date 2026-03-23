@@ -1,0 +1,7 @@
+python -m venv .venv
+
+source .venv/Scripts/activate
+
+mkdir -p data/generators pipelines/bronze pipelines/silver pipelines/streaming dbt/models/staging dbt/models/intermediate dbt/models/marts ai/forecasting ai/anomaly dashboards docs tests
+
+pip install -r requirements.txt
