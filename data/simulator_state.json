@@ -1,11 +1,11 @@
 {
   "version": "1.0",
   "created_at": "2026-03-22T05:32:28.963026",
-  "last_run_at": "2026-03-22T16:45:10.983231",
-  "trip_counter": 1011,
-  "pay_counter": 741,
-  "rating_counter": 1011,
-  "total_trips": 1011,
+  "last_run_at": "2026-03-23T17:30:06.846289",
+  "trip_counter": 15085,
+  "pay_counter": 11172,
+  "rating_counter": 15087,
+  "total_trips": 15085,
   "drivers": [
     {
       "driver_id": "DRV00001",
@@ -31246,6 +31246,2891 @@
       "segment": "casual",
       "preferred_payment": "cash",
       "is_active": true
+    },
+    {
+      "rider_id": "RDR002035",
+      "city": "HANOI",
+      "segment": "regular",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002036",
+      "city": "HCMC",
+      "segment": "vip",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002037",
+      "city": "HANOI",
+      "segment": "casual",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002038",
+      "city": "HCMC",
+      "segment": "vip",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002039",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "zalopay",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002040",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "zalopay",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002041",
+      "city": "HANOI",
+      "segment": "vip",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002042",
+      "city": "HANOI",
+      "segment": "vip",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002043",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002044",
+      "city": "HCMC",
+      "segment": "vip",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002045",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002046",
+      "city": "HCMC",
+      "segment": "regular",
+      "preferred_payment": "zalopay",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002047",
+      "city": "HANOI",
+      "segment": "vip",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002048",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "credit_card",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002049",
+      "city": "HCMC",
+      "segment": "vip",
+      "preferred_payment": "credit_card",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002050",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002051",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "zalopay",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002052",
+      "city": "HCMC",
+      "segment": "vip",
+      "preferred_payment": "credit_card",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002053",
+      "city": "HCMC",
+      "segment": "regular",
+      "preferred_payment": "vnpay",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002054",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002055",
+      "city": "HANOI",
+      "segment": "casual",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002056",
+      "city": "HANOI",
+      "segment": "vip",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002057",
+      "city": "HANOI",
+      "segment": "vip",
+      "preferred_payment": "vnpay",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002058",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002059",
+      "city": "HCMC",
+      "segment": "vip",
+      "preferred_payment": "zalopay",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002060",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002061",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002062",
+      "city": "HANOI",
+      "segment": "regular",
+      "preferred_payment": "zalopay",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002063",
+      "city": "HANOI",
+      "segment": "casual",
+      "preferred_payment": "zalopay",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002064",
+      "city": "HCMC",
+      "segment": "vip",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002065",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002066",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "credit_card",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002067",
+      "city": "HCMC",
+      "segment": "regular",
+      "preferred_payment": "zalopay",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002068",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "zalopay",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002069",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002070",
+      "city": "HANOI",
+      "segment": "casual",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002071",
+      "city": "HCMC",
+      "segment": "regular",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002072",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002073",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002074",
+      "city": "HCMC",
+      "segment": "regular",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002075",
+      "city": "HCMC",
+      "segment": "regular",
+      "preferred_payment": "credit_card",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002076",
+      "city": "HANOI",
+      "segment": "casual",
+      "preferred_payment": "vnpay",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002077",
+      "city": "HCMC",
+      "segment": "vip",
+      "preferred_payment": "zalopay",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002078",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "credit_card",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002079",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "zalopay",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002080",
+      "city": "HANOI",
+      "segment": "vip",
+      "preferred_payment": "credit_card",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002081",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002082",
+      "city": "HCMC",
+      "segment": "regular",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002083",
+      "city": "HANOI",
+      "segment": "regular",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002084",
+      "city": "HCMC",
+      "segment": "vip",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002085",
+      "city": "HANOI",
+      "segment": "regular",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002086",
+      "city": "HANOI",
+      "segment": "regular",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002087",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002088",
+      "city": "HANOI",
+      "segment": "regular",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002089",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002090",
+      "city": "HCMC",
+      "segment": "vip",
+      "preferred_payment": "credit_card",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002091",
+      "city": "HANOI",
+      "segment": "casual",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002092",
+      "city": "HANOI",
+      "segment": "casual",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002093",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "zalopay",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002094",
+      "city": "HCMC",
+      "segment": "vip",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002095",
+      "city": "HCMC",
+      "segment": "regular",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002096",
+      "city": "HCMC",
+      "segment": "regular",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002097",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002098",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002099",
+      "city": "HCMC",
+      "segment": "regular",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002100",
+      "city": "HCMC",
+      "segment": "vip",
+      "preferred_payment": "zalopay",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002101",
+      "city": "HCMC",
+      "segment": "regular",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002102",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "credit_card",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002103",
+      "city": "HCMC",
+      "segment": "vip",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002104",
+      "city": "HANOI",
+      "segment": "vip",
+      "preferred_payment": "zalopay",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002105",
+      "city": "HANOI",
+      "segment": "casual",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002106",
+      "city": "HANOI",
+      "segment": "casual",
+      "preferred_payment": "credit_card",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002107",
+      "city": "HANOI",
+      "segment": "casual",
+      "preferred_payment": "zalopay",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002108",
+      "city": "HCMC",
+      "segment": "vip",
+      "preferred_payment": "vnpay",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002109",
+      "city": "HCMC",
+      "segment": "vip",
+      "preferred_payment": "vnpay",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002110",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "zalopay",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002111",
+      "city": "HCMC",
+      "segment": "regular",
+      "preferred_payment": "credit_card",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002112",
+      "city": "HANOI",
+      "segment": "casual",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002113",
+      "city": "HCMC",
+      "segment": "regular",
+      "preferred_payment": "zalopay",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002114",
+      "city": "HANOI",
+      "segment": "casual",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002115",
+      "city": "HANOI",
+      "segment": "casual",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002116",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "zalopay",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002117",
+      "city": "HCMC",
+      "segment": "regular",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002118",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "zalopay",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002119",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002120",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "credit_card",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002121",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002122",
+      "city": "HANOI",
+      "segment": "regular",
+      "preferred_payment": "zalopay",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002123",
+      "city": "HCMC",
+      "segment": "regular",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002124",
+      "city": "HANOI",
+      "segment": "casual",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002125",
+      "city": "HCMC",
+      "segment": "vip",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002126",
+      "city": "HANOI",
+      "segment": "casual",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002127",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "zalopay",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002128",
+      "city": "HANOI",
+      "segment": "casual",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002129",
+      "city": "HANOI",
+      "segment": "regular",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002130",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "zalopay",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002131",
+      "city": "HANOI",
+      "segment": "vip",
+      "preferred_payment": "credit_card",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002132",
+      "city": "HCMC",
+      "segment": "vip",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002133",
+      "city": "HANOI",
+      "segment": "casual",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002134",
+      "city": "HANOI",
+      "segment": "regular",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002135",
+      "city": "HANOI",
+      "segment": "casual",
+      "preferred_payment": "zalopay",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002136",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002137",
+      "city": "HANOI",
+      "segment": "regular",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002138",
+      "city": "HANOI",
+      "segment": "vip",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002139",
+      "city": "HCMC",
+      "segment": "regular",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002140",
+      "city": "HCMC",
+      "segment": "regular",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002141",
+      "city": "HCMC",
+      "segment": "vip",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002142",
+      "city": "HANOI",
+      "segment": "regular",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002143",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002144",
+      "city": "HANOI",
+      "segment": "casual",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002145",
+      "city": "HANOI",
+      "segment": "vip",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002146",
+      "city": "HANOI",
+      "segment": "vip",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002147",
+      "city": "HANOI",
+      "segment": "casual",
+      "preferred_payment": "credit_card",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002148",
+      "city": "HANOI",
+      "segment": "casual",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002149",
+      "city": "HANOI",
+      "segment": "casual",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002150",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "credit_card",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002151",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "credit_card",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002152",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002153",
+      "city": "HANOI",
+      "segment": "casual",
+      "preferred_payment": "zalopay",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002154",
+      "city": "HCMC",
+      "segment": "regular",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002155",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "credit_card",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002156",
+      "city": "HCMC",
+      "segment": "regular",
+      "preferred_payment": "credit_card",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002157",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002158",
+      "city": "HCMC",
+      "segment": "regular",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002159",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002160",
+      "city": "HCMC",
+      "segment": "regular",
+      "preferred_payment": "zalopay",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002161",
+      "city": "HANOI",
+      "segment": "casual",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002162",
+      "city": "HANOI",
+      "segment": "vip",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002163",
+      "city": "HCMC",
+      "segment": "regular",
+      "preferred_payment": "credit_card",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002164",
+      "city": "HCMC",
+      "segment": "vip",
+      "preferred_payment": "vnpay",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002165",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002166",
+      "city": "HANOI",
+      "segment": "casual",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002167",
+      "city": "HCMC",
+      "segment": "regular",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002168",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002169",
+      "city": "HCMC",
+      "segment": "regular",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002170",
+      "city": "HCMC",
+      "segment": "regular",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002171",
+      "city": "HANOI",
+      "segment": "casual",
+      "preferred_payment": "zalopay",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002172",
+      "city": "HCMC",
+      "segment": "vip",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002173",
+      "city": "HANOI",
+      "segment": "casual",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002174",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "credit_card",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002175",
+      "city": "HCMC",
+      "segment": "vip",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002176",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "zalopay",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002177",
+      "city": "HCMC",
+      "segment": "vip",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002178",
+      "city": "HANOI",
+      "segment": "regular",
+      "preferred_payment": "zalopay",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002179",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002180",
+      "city": "HCMC",
+      "segment": "vip",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002181",
+      "city": "HCMC",
+      "segment": "regular",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002182",
+      "city": "HANOI",
+      "segment": "vip",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002183",
+      "city": "HCMC",
+      "segment": "regular",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002184",
+      "city": "HANOI",
+      "segment": "regular",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002185",
+      "city": "HCMC",
+      "segment": "vip",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002186",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "vnpay",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002187",
+      "city": "HCMC",
+      "segment": "vip",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002188",
+      "city": "HANOI",
+      "segment": "regular",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002189",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002190",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002191",
+      "city": "HCMC",
+      "segment": "regular",
+      "preferred_payment": "zalopay",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002192",
+      "city": "HCMC",
+      "segment": "vip",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002193",
+      "city": "HCMC",
+      "segment": "vip",
+      "preferred_payment": "zalopay",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002194",
+      "city": "HANOI",
+      "segment": "regular",
+      "preferred_payment": "vnpay",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002195",
+      "city": "HCMC",
+      "segment": "regular",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002196",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002197",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002198",
+      "city": "HANOI",
+      "segment": "vip",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002199",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002200",
+      "city": "HCMC",
+      "segment": "regular",
+      "preferred_payment": "credit_card",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002201",
+      "city": "HCMC",
+      "segment": "regular",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002202",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002203",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002204",
+      "city": "HCMC",
+      "segment": "regular",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002205",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002206",
+      "city": "HCMC",
+      "segment": "regular",
+      "preferred_payment": "zalopay",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002207",
+      "city": "HANOI",
+      "segment": "regular",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002208",
+      "city": "HCMC",
+      "segment": "vip",
+      "preferred_payment": "zalopay",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002209",
+      "city": "HCMC",
+      "segment": "regular",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002210",
+      "city": "HANOI",
+      "segment": "casual",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002211",
+      "city": "HANOI",
+      "segment": "regular",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002212",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002213",
+      "city": "HANOI",
+      "segment": "vip",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002214",
+      "city": "HCMC",
+      "segment": "vip",
+      "preferred_payment": "zalopay",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002215",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "vnpay",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002216",
+      "city": "HCMC",
+      "segment": "vip",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002217",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002218",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "zalopay",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002219",
+      "city": "HCMC",
+      "segment": "regular",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002220",
+      "city": "HANOI",
+      "segment": "casual",
+      "preferred_payment": "vnpay",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002221",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002222",
+      "city": "HCMC",
+      "segment": "vip",
+      "preferred_payment": "zalopay",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002223",
+      "city": "HANOI",
+      "segment": "vip",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002224",
+      "city": "HCMC",
+      "segment": "vip",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002225",
+      "city": "HANOI",
+      "segment": "vip",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002226",
+      "city": "HANOI",
+      "segment": "regular",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002227",
+      "city": "HANOI",
+      "segment": "regular",
+      "preferred_payment": "vnpay",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002228",
+      "city": "HCMC",
+      "segment": "regular",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002229",
+      "city": "HANOI",
+      "segment": "casual",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002230",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002231",
+      "city": "HCMC",
+      "segment": "regular",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002232",
+      "city": "HANOI",
+      "segment": "casual",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002233",
+      "city": "HANOI",
+      "segment": "casual",
+      "preferred_payment": "zalopay",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002234",
+      "city": "HCMC",
+      "segment": "regular",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002235",
+      "city": "HCMC",
+      "segment": "regular",
+      "preferred_payment": "vnpay",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002236",
+      "city": "HCMC",
+      "segment": "regular",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002237",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002238",
+      "city": "HANOI",
+      "segment": "regular",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002239",
+      "city": "HANOI",
+      "segment": "casual",
+      "preferred_payment": "zalopay",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002240",
+      "city": "HCMC",
+      "segment": "vip",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002241",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002242",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002243",
+      "city": "HCMC",
+      "segment": "regular",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002244",
+      "city": "HANOI",
+      "segment": "vip",
+      "preferred_payment": "credit_card",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002245",
+      "city": "HCMC",
+      "segment": "regular",
+      "preferred_payment": "zalopay",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002246",
+      "city": "HANOI",
+      "segment": "casual",
+      "preferred_payment": "vnpay",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002247",
+      "city": "HCMC",
+      "segment": "regular",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002248",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002249",
+      "city": "HCMC",
+      "segment": "regular",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002250",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002251",
+      "city": "HCMC",
+      "segment": "regular",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002252",
+      "city": "HANOI",
+      "segment": "casual",
+      "preferred_payment": "credit_card",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002253",
+      "city": "HCMC",
+      "segment": "regular",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002254",
+      "city": "HANOI",
+      "segment": "casual",
+      "preferred_payment": "credit_card",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002255",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002256",
+      "city": "HANOI",
+      "segment": "casual",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002257",
+      "city": "HCMC",
+      "segment": "regular",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002258",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002259",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002260",
+      "city": "HANOI",
+      "segment": "casual",
+      "preferred_payment": "credit_card",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002261",
+      "city": "HANOI",
+      "segment": "vip",
+      "preferred_payment": "zalopay",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002262",
+      "city": "HANOI",
+      "segment": "casual",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002263",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002264",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002265",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002266",
+      "city": "HANOI",
+      "segment": "casual",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002267",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "vnpay",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002268",
+      "city": "HANOI",
+      "segment": "casual",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002269",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002270",
+      "city": "HANOI",
+      "segment": "casual",
+      "preferred_payment": "zalopay",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002271",
+      "city": "HCMC",
+      "segment": "regular",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002272",
+      "city": "HANOI",
+      "segment": "regular",
+      "preferred_payment": "zalopay",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002273",
+      "city": "HANOI",
+      "segment": "casual",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002274",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "zalopay",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002275",
+      "city": "HCMC",
+      "segment": "regular",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002276",
+      "city": "HANOI",
+      "segment": "vip",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002277",
+      "city": "HANOI",
+      "segment": "casual",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002278",
+      "city": "HCMC",
+      "segment": "regular",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002279",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002280",
+      "city": "HCMC",
+      "segment": "regular",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002281",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "zalopay",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002282",
+      "city": "HCMC",
+      "segment": "vip",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002283",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002284",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002285",
+      "city": "HANOI",
+      "segment": "vip",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002286",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "vnpay",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002287",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002288",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "zalopay",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002289",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002290",
+      "city": "HCMC",
+      "segment": "vip",
+      "preferred_payment": "zalopay",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002291",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002292",
+      "city": "HCMC",
+      "segment": "regular",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002293",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002294",
+      "city": "HCMC",
+      "segment": "regular",
+      "preferred_payment": "zalopay",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002295",
+      "city": "HANOI",
+      "segment": "vip",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002296",
+      "city": "HCMC",
+      "segment": "regular",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002297",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002298",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002299",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "credit_card",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002300",
+      "city": "HANOI",
+      "segment": "regular",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002301",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002302",
+      "city": "HCMC",
+      "segment": "regular",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002303",
+      "city": "HANOI",
+      "segment": "casual",
+      "preferred_payment": "credit_card",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002304",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002305",
+      "city": "HANOI",
+      "segment": "casual",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002306",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002307",
+      "city": "HANOI",
+      "segment": "regular",
+      "preferred_payment": "credit_card",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002308",
+      "city": "HANOI",
+      "segment": "casual",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002309",
+      "city": "HCMC",
+      "segment": "regular",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002310",
+      "city": "HANOI",
+      "segment": "casual",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002311",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002312",
+      "city": "HCMC",
+      "segment": "vip",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002313",
+      "city": "HCMC",
+      "segment": "regular",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002314",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002315",
+      "city": "HCMC",
+      "segment": "regular",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002316",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002317",
+      "city": "HANOI",
+      "segment": "casual",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002318",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002319",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "zalopay",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002320",
+      "city": "HANOI",
+      "segment": "regular",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002321",
+      "city": "HCMC",
+      "segment": "regular",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002322",
+      "city": "HCMC",
+      "segment": "vip",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002323",
+      "city": "HANOI",
+      "segment": "casual",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002324",
+      "city": "HANOI",
+      "segment": "regular",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002325",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002326",
+      "city": "HCMC",
+      "segment": "regular",
+      "preferred_payment": "credit_card",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002327",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002328",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002329",
+      "city": "HANOI",
+      "segment": "vip",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002330",
+      "city": "HCMC",
+      "segment": "regular",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002331",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "credit_card",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002332",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "zalopay",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002333",
+      "city": "HANOI",
+      "segment": "casual",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002334",
+      "city": "HCMC",
+      "segment": "vip",
+      "preferred_payment": "vnpay",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002335",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "vnpay",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002336",
+      "city": "HCMC",
+      "segment": "regular",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002337",
+      "city": "HCMC",
+      "segment": "regular",
+      "preferred_payment": "zalopay",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002338",
+      "city": "HCMC",
+      "segment": "regular",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002339",
+      "city": "HANOI",
+      "segment": "regular",
+      "preferred_payment": "vnpay",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002340",
+      "city": "HANOI",
+      "segment": "casual",
+      "preferred_payment": "zalopay",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002341",
+      "city": "HANOI",
+      "segment": "regular",
+      "preferred_payment": "zalopay",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002342",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002343",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002344",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002345",
+      "city": "HANOI",
+      "segment": "regular",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002346",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002347",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002348",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "zalopay",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002349",
+      "city": "HANOI",
+      "segment": "casual",
+      "preferred_payment": "credit_card",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002350",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "zalopay",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002351",
+      "city": "HANOI",
+      "segment": "regular",
+      "preferred_payment": "credit_card",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002352",
+      "city": "HCMC",
+      "segment": "regular",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002353",
+      "city": "HCMC",
+      "segment": "vip",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002354",
+      "city": "HCMC",
+      "segment": "regular",
+      "preferred_payment": "vnpay",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002355",
+      "city": "HCMC",
+      "segment": "regular",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002356",
+      "city": "HANOI",
+      "segment": "casual",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002357",
+      "city": "HCMC",
+      "segment": "regular",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002358",
+      "city": "HCMC",
+      "segment": "vip",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002359",
+      "city": "HANOI",
+      "segment": "vip",
+      "preferred_payment": "credit_card",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002360",
+      "city": "HANOI",
+      "segment": "regular",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002361",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "vnpay",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002362",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "credit_card",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002363",
+      "city": "HANOI",
+      "segment": "regular",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002364",
+      "city": "HANOI",
+      "segment": "regular",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002365",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002366",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002367",
+      "city": "HANOI",
+      "segment": "casual",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002368",
+      "city": "HANOI",
+      "segment": "casual",
+      "preferred_payment": "zalopay",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002369",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "credit_card",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002370",
+      "city": "HANOI",
+      "segment": "casual",
+      "preferred_payment": "zalopay",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002371",
+      "city": "HANOI",
+      "segment": "regular",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002372",
+      "city": "HANOI",
+      "segment": "casual",
+      "preferred_payment": "credit_card",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002373",
+      "city": "HANOI",
+      "segment": "casual",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002374",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "zalopay",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002375",
+      "city": "HCMC",
+      "segment": "regular",
+      "preferred_payment": "zalopay",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002376",
+      "city": "HCMC",
+      "segment": "regular",
+      "preferred_payment": "zalopay",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002377",
+      "city": "HANOI",
+      "segment": "casual",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002378",
+      "city": "HANOI",
+      "segment": "regular",
+      "preferred_payment": "credit_card",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002379",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002380",
+      "city": "HANOI",
+      "segment": "casual",
+      "preferred_payment": "vnpay",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002381",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002382",
+      "city": "HANOI",
+      "segment": "casual",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002383",
+      "city": "HANOI",
+      "segment": "casual",
+      "preferred_payment": "zalopay",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002384",
+      "city": "HANOI",
+      "segment": "vip",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002385",
+      "city": "HCMC",
+      "segment": "vip",
+      "preferred_payment": "credit_card",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002386",
+      "city": "HANOI",
+      "segment": "casual",
+      "preferred_payment": "zalopay",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002387",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002388",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002389",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002390",
+      "city": "HANOI",
+      "segment": "casual",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002391",
+      "city": "HCMC",
+      "segment": "regular",
+      "preferred_payment": "zalopay",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002392",
+      "city": "HCMC",
+      "segment": "vip",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002393",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "zalopay",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002394",
+      "city": "HANOI",
+      "segment": "regular",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002395",
+      "city": "HCMC",
+      "segment": "regular",
+      "preferred_payment": "credit_card",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002396",
+      "city": "HANOI",
+      "segment": "regular",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002397",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "credit_card",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002398",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002399",
+      "city": "HANOI",
+      "segment": "casual",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002400",
+      "city": "HANOI",
+      "segment": "casual",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002401",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "zalopay",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002402",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002403",
+      "city": "HANOI",
+      "segment": "regular",
+      "preferred_payment": "zalopay",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002404",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002405",
+      "city": "HCMC",
+      "segment": "regular",
+      "preferred_payment": "zalopay",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002406",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002407",
+      "city": "HANOI",
+      "segment": "casual",
+      "preferred_payment": "credit_card",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002408",
+      "city": "HCMC",
+      "segment": "vip",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002409",
+      "city": "HANOI",
+      "segment": "vip",
+      "preferred_payment": "zalopay",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002410",
+      "city": "HANOI",
+      "segment": "regular",
+      "preferred_payment": "vnpay",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002411",
+      "city": "HCMC",
+      "segment": "regular",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002412",
+      "city": "HANOI",
+      "segment": "casual",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002413",
+      "city": "HANOI",
+      "segment": "vip",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002414",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002415",
+      "city": "HCMC",
+      "segment": "regular",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002416",
+      "city": "HANOI",
+      "segment": "casual",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002417",
+      "city": "HANOI",
+      "segment": "casual",
+      "preferred_payment": "zalopay",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002418",
+      "city": "HCMC",
+      "segment": "vip",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002419",
+      "city": "HCMC",
+      "segment": "regular",
+      "preferred_payment": "vnpay",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002420",
+      "city": "HANOI",
+      "segment": "regular",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002421",
+      "city": "HANOI",
+      "segment": "regular",
+      "preferred_payment": "zalopay",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002422",
+      "city": "HCMC",
+      "segment": "regular",
+      "preferred_payment": "zalopay",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002423",
+      "city": "HANOI",
+      "segment": "casual",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002424",
+      "city": "HANOI",
+      "segment": "regular",
+      "preferred_payment": "zalopay",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002425",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002426",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002427",
+      "city": "HANOI",
+      "segment": "casual",
+      "preferred_payment": "zalopay",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002428",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002429",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "credit_card",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002430",
+      "city": "HANOI",
+      "segment": "casual",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002431",
+      "city": "HANOI",
+      "segment": "vip",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002432",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "vnpay",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002433",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "zalopay",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002434",
+      "city": "HCMC",
+      "segment": "regular",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002435",
+      "city": "HANOI",
+      "segment": "casual",
+      "preferred_payment": "zalopay",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002436",
+      "city": "HCMC",
+      "segment": "regular",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002437",
+      "city": "HCMC",
+      "segment": "regular",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002438",
+      "city": "HCMC",
+      "segment": "regular",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002439",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002440",
+      "city": "HANOI",
+      "segment": "regular",
+      "preferred_payment": "momo",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002441",
+      "city": "HCMC",
+      "segment": "regular",
+      "preferred_payment": "vnpay",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002442",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002443",
+      "city": "HANOI",
+      "segment": "vip",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002444",
+      "city": "HCMC",
+      "segment": "regular",
+      "preferred_payment": "cash",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002445",
+      "city": "HCMC",
+      "segment": "vip",
+      "preferred_payment": "zalopay",
+      "is_active": true
+    },
+    {
+      "rider_id": "RDR002446",
+      "city": "HCMC",
+      "segment": "casual",
+      "preferred_payment": "cash",
+      "is_active": true
     }
-  ]
+  ],
+  "current_sim_date": "2026-03-30"
 }

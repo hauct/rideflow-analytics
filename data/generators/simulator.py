@@ -120,13 +120,12 @@ def write_jsonl(records: list, path: Path):
 def partition_path(entity: str, dt: datetime) -> Path:
     """
     Hive-style partition path:
-    data/raw/trips/date=2026-03-21/hour=14/batch_1430.jsonl
+    data/raw/trips/date=2026-03-21/data.jsonl
     """
     return (
         Path(RAW_ROOT) / entity
         / f"date={dt.strftime('%Y-%m-%d')}"
-        / f"hour={dt.strftime('%H')}"
-        / f"batch_{dt.strftime('%H%M')}.jsonl"
+        / "data.jsonl"
     )
 
 # ─── State management ─────────────────────────────────────────────────────────
@@ -174,6 +173,7 @@ def init_state(n_drivers: int = 500, n_riders: int = 2000) -> dict:
         "version":        LOG_VERSION,
         "created_at":     datetime.now().isoformat(),
         "last_run_at":    None,
+        "current_sim_date": datetime.now().strftime("%Y-%m-%d"),
         "trip_counter":   0,
         "pay_counter":    0,
         "rating_counter": 0,
@@ -389,75 +389,69 @@ def generate_window(state: dict, window_start: datetime) -> tuple:
 
 # ─── Run modes ────────────────────────────────────────────────────────────────
 
-def run_single_window(window_start: datetime = None):
-    """1 window — Airflow PythonOperator gọi cái này."""
+def run_daily_batch(target_date: str = None):
+    """Airflow gọi cái này. Sinh 1 ngày data (96 windows) và update state tiến 1 ngày."""
     state = load_state()
 
-    if window_start is None:
-        now    = datetime.now()
-        minute = (now.minute // 15) * 15
-        window_start = now.replace(minute=minute, second=0, microsecond=0)
+    if target_date is None:
+        target_date = state.get("current_sim_date")
+        if not target_date:
+            target_date = datetime.now().strftime("%Y-%m-%d")
 
-    trips, payments, ratings = generate_window(state, window_start)
+    current_dt = datetime.strptime(target_date, "%Y-%m-%d")
 
-    write_jsonl(trips,    partition_path("trips",    window_start))
-    write_jsonl(payments, partition_path("payments", window_start))
-    write_jsonl(ratings,  partition_path("ratings",  window_start))
+    trips_all, payments_all, ratings_all = [], [], []
+    for m in range(0, 24 * 60, 15):
+        window_dt = current_dt + timedelta(minutes=m)
+        t, p, r = generate_window(state, window_dt)
+        trips_all.extend(t)
+        payments_all.extend(p)
+        ratings_all.extend(r)
 
+    # Overwrite the jsonl data for the target_date
+    write_jsonl(trips_all,    partition_path("trips",    current_dt))
+    write_jsonl(payments_all, partition_path("payments", current_dt))
+    write_jsonl(ratings_all,  partition_path("ratings",  current_dt))
+
+    # Advance state for the next run
+    next_date = (current_dt + timedelta(days=1)).strftime("%Y-%m-%d")
+    state["current_sim_date"] = next_date
     state["last_run_at"] = datetime.now().isoformat()
     save_state(state)
 
-    print(f"  [{window_start.strftime('%Y-%m-%d %H:%M')}] "
-          f"{len(trips)} trips | {len(payments)} payments | "
-          f"{len(ratings)} ratings | total: {state['total_trips']:,}")
-    return {"trips": len(trips), "payments": len(payments), "ratings": len(ratings)}
+    print(f"  [Daily Batch: {target_date}] "
+          f"{len(trips_all)} trips | {len(payments_all)} payments | "
+          f"{len(ratings_all)} ratings | total: {state['total_trips']:,}")
+    return {"trips": len(trips_all), "payments": len(payments_all), "ratings": len(ratings_all), "target_date": target_date}
 
 
-def run_backfill(n_windows: int = 96, end_time: datetime = None):
-    """Backfill nhiều windows — dùng lần đầu để có historical data."""
+def run_backfill(n_days: int = 1, start_date: str = None):
+    """Backfill nhiều ngày — dùng lần đầu để có historical data."""
     state = load_state()
 
-    if end_time is None:
-        now    = datetime.now()
-        minute = (now.minute // 15) * 15
-        end_time = now.replace(minute=minute, second=0, microsecond=0)
+    if start_date is None:
+        start_date = state.get("current_sim_date")
+        if not start_date:
+            start_date = datetime.now().strftime("%Y-%m-%d")
 
-    start_time = end_time - timedelta(minutes=WINDOW_MIN * n_windows)
-    print(f"  Backfill {n_windows} windows "
-          f"({start_time.strftime('%Y-%m-%d %H:%M')} → "
-          f"{end_time.strftime('%Y-%m-%d %H:%M')})")
+    print(f"  Backfill {n_days} days starting from {start_date}")
     print(f"  {'─' * 50}")
 
-    total, current = 0, start_time
-    while current < end_time:
-        trips, payments, ratings = generate_window(state, current)
-        write_jsonl(trips,    partition_path("trips",    current))
-        write_jsonl(payments, partition_path("payments", current))
-        write_jsonl(ratings,  partition_path("ratings",  current))
-        total += len(trips)
+    current_date = start_date
+    for _ in range(n_days):
+        result = run_daily_batch(target_date=current_date)
+        current_dt = datetime.strptime(current_date, "%Y-%m-%d")
+        current_date = (current_dt + timedelta(days=1)).strftime("%Y-%m-%d")
 
-        elapsed = int((current - start_time).total_seconds() / 60)
-        if elapsed % 60 == 0:   # log mỗi 1h
-            print(f"  +{elapsed:>4}m  {current.strftime('%Y-%m-%d %H:%M')}  "
-                  f"→  {total:>7,} trips")
-        current += timedelta(minutes=WINDOW_MIN)
-
-    state["last_run_at"] = datetime.now().isoformat()
-    save_state(state)
-    print(f"\n  Done: {total:,} trips | "
-          f"{state['pay_counter']:,} payments | "
-          f"{state['rating_counter']:,} ratings")
+    print(f"\n  Done backfill {n_days} days!")
     print(f"  Files: {RAW_ROOT}/trips/, payments/, ratings/\n")
 
 
 def main():
     parser = argparse.ArgumentParser(description="RideFlow Trip Simulator")
-    parser.add_argument("--init",     action="store_true",
-                        help="Khởi tạo state (chỉ chạy 1 lần)")
-    parser.add_argument("--backfill", action="store_true",
-                        help="Backfill historical windows")
-    parser.add_argument("--windows",  type=int, default=96,
-                        help="Số windows khi backfill (default 96 = 1 ngày)")
+    parser.add_argument("--init",     action="store_true", help="Khởi tạo state (chỉ chạy 1 lần)")
+    parser.add_argument("--backfill", action="store_true", help="Backfill historical data")
+    parser.add_argument("--days",     type=int, default=1, help="Số ngày khi backfill (default: 1 ngày)")
     parser.add_argument("--drivers",  type=int, default=500)
     parser.add_argument("--riders",   type=int, default=2000)
     parser.add_argument("--seed",     type=int, default=42)
@@ -476,15 +470,15 @@ def main():
         state = init_state(n_drivers=args.drivers, n_riders=args.riders)
         save_state(state)
         print(f"  Saved → {STATE_FILE}")
-        print(f"  Bước tiếp: python simulator.py --backfill --windows 96\n")
+        print(f"  Bước tiếp: python simulator.py --backfill --days 7\n")
         return
 
     if args.backfill:
-        run_backfill(n_windows=args.windows)
+        run_backfill(n_days=args.days)
         return
 
-    # Default: 1 window — Airflow gọi cái này
-    run_single_window()
+    # Default: chạy 1 batch hàng ngày — Airflow gọi
+    run_daily_batch()
 
 
 if __name__ == "__main__":

@@ -1,0 +1,30 @@
+# Data Simulation & State
+data/raw/
+data/simulator_state.json
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Jupyter Notebooks
+.ipynb_checkpoints/
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+
+# Spark / Airflow logs
+logs/
+spark-warehouse/
+derby.log
+metastore_db/
+
+# IDEs
+.idea/
+.vscode/
+*.swp
+.DS_Store

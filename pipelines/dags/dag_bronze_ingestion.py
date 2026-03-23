@@ -11,8 +11,8 @@ Lý do dùng BashOperator + docker exec thay SparkSubmitOperator:
 
 Fix trong version này:
   - Dùng BashOperator + docker exec (pattern đúng với setup này)
-  - Fix window argument: dùng quotes đúng để "2026-03-22 09:15" không bị tách
-  - Import simulator trực tiếp (không dùng subprocess --sim-time)
+  - Chuyển sang gen data theo ngày (daily batch) với target_date tiến tới trên file state
+  - Partition Delta table bằng date thay vì hour theo nhu cầu user
 """
 
 from __future__ import annotations
@@ -46,8 +46,10 @@ MINIO_ENDPOINT = Variable.get("MINIO_ENDPOINT",    default_var="http://minio:900
 
 # Path của ingest_trips.py bên trong Spark container
 # (mount từ ./pipelines → /opt/spark-apps)
-INGEST_SCRIPT  = "/opt/spark-apps/bronze/ingest_trips.py"
-SPARK_MASTER   = "spark://spark-master:7077"
+INGEST_TRIPS_SCRIPT    = "/opt/spark-apps/bronze/ingest_trips.py"
+INGEST_PAYMENTS_SCRIPT = "/opt/spark-apps/bronze/ingest_payments.py"
+INGEST_RATINGS_SCRIPT  = "/opt/spark-apps/bronze/ingest_ratings.py"
+SPARK_MASTER           = "spark://spark-master:7077"
 
 
 # ─── Helper: import simulator ─────────────────────────────────────────────────
@@ -61,11 +63,7 @@ def _get_simulator():
     return module
 
 
-def _window_from_context(context) -> datetime:
-    """Round data_interval_start về mốc 15 phút."""
-    ts     = context["data_interval_start"]
-    minute = (ts.minute // 15) * 15
-    return ts.replace(minute=minute, second=0, microsecond=0)
+
 
 
 # ─── Tasks ────────────────────────────────────────────────────────────────────
@@ -88,27 +86,27 @@ def init_simulator(**context):
 
 
 def run_simulator(**context):
-    """Gọi run_single_window() trực tiếp — không subprocess, không argument."""
+    """Gọi run_daily_batch() trực tiếp — đọc target_date từ state và tiến thêm 1 ngày."""
     sim          = _get_simulator()
-    window_start = _window_from_context(context)
-    window_str   = window_start.strftime("%Y-%m-%d %H:%M")
 
-    print(f"[run_simulator] Window: {window_str}")
-    result = sim.run_single_window(window_start=window_start)
+    result = sim.run_daily_batch()
+    target_date = result["target_date"]
+
+    print(f"[run_simulator] Target Date: {target_date}")
     print(f"[run_simulator] ✅ "
           f"{result['trips']} trips | "
           f"{result['payments']} payments | "
           f"{result['ratings']} ratings")
 
-    context["ti"].xcom_push(key="window_start", value=window_str)
+    context["ti"].xcom_push(key="target_date", value=target_date)
 
 
 def log_summary(**context):
     import psycopg2, os
-    window_str = context["ti"].xcom_pull(
-        key="window_start", task_ids="run_simulator"
+    target_date = context["ti"].xcom_pull(
+        key="target_date", task_ids="run_simulator"
     )
-    print(f"[log_summary] window={window_str}")
+    print(f"[log_summary] target_date={target_date}")
     try:
         conn = psycopg2.connect(
             host    =os.getenv("POSTGRES_HOST",     "postgres"),
@@ -122,14 +120,14 @@ def log_summary(**context):
             CREATE TABLE IF NOT EXISTS pipeline_runs (
                 id           SERIAL PRIMARY KEY,
                 run_at       TIMESTAMP DEFAULT NOW(),
-                window_start VARCHAR(30),
+                target_date  VARCHAR(30),
                 dag_id       VARCHAR(100),
                 status       VARCHAR(20)
             )
         """)
         cur.execute(
-            "INSERT INTO pipeline_runs (window_start, dag_id, status) VALUES (%s, %s, %s)",
-            (window_str, "rideflow_bronze_ingestion", "success")
+            "INSERT INTO pipeline_runs (target_date, dag_id, status) VALUES (%s, %s, %s)",
+            (target_date, "rideflow_bronze_ingestion", "success")
         )
         conn.commit()
         cur.close(); conn.close()
@@ -174,7 +172,7 @@ with DAG(
     t_ingest_trips = BashOperator(
         task_id="ingest_trips_spark",
         bash_command="""
-WINDOW="{{ ti.xcom_pull(key='window_start', task_ids='run_simulator') }}"
+TARGET_DATE="{{ ti.xcom_pull(key='target_date', task_ids='run_simulator') }}"
 
 docker exec de-spark-master \
   /opt/spark/bin/spark-submit \
@@ -189,7 +187,7 @@ docker exec de-spark-master \
     --conf spark.hadoop.fs.s3a.path.style.access=true \
     --conf spark.hadoop.fs.s3a.connection.ssl.enabled=false \
     {{ params.ingest_script }} \
-    --window "$WINDOW" \
+    --target-date "$TARGET_DATE" \
     --minio-key {{ params.minio_key }} \
     --minio-secret {{ params.minio_secret }}
 """,
@@ -198,7 +196,71 @@ docker exec de-spark-master \
             "minio_endpoint": MINIO_ENDPOINT,
             "minio_key":      MINIO_KEY,
             "minio_secret":   MINIO_SECRET,
-            "ingest_script":  INGEST_SCRIPT,
+            "ingest_script":  INGEST_TRIPS_SCRIPT,
+        },
+        trigger_rule="none_failed",
+    )
+
+    t_ingest_payments = BashOperator(
+        task_id="ingest_payments_spark",
+        bash_command="""
+TARGET_DATE="{{ ti.xcom_pull(key='target_date', task_ids='run_simulator') }}"
+
+docker exec de-spark-master \
+  /opt/spark/bin/spark-submit \
+    --master {{ params.spark_master }} \
+    --deploy-mode client \
+    --driver-memory 512m \
+    --executor-memory 512m \
+    --executor-cores 1 \
+    --conf spark.hadoop.fs.s3a.endpoint={{ params.minio_endpoint }} \
+    --conf spark.hadoop.fs.s3a.access.key={{ params.minio_key }} \
+    --conf spark.hadoop.fs.s3a.secret.key={{ params.minio_secret }} \
+    --conf spark.hadoop.fs.s3a.path.style.access=true \
+    --conf spark.hadoop.fs.s3a.connection.ssl.enabled=false \
+    {{ params.ingest_script }} \
+    --target-date "$TARGET_DATE" \
+    --minio-key {{ params.minio_key }} \
+    --minio-secret {{ params.minio_secret }}
+""",
+        params={
+            "spark_master":   SPARK_MASTER,
+            "minio_endpoint": MINIO_ENDPOINT,
+            "minio_key":      MINIO_KEY,
+            "minio_secret":   MINIO_SECRET,
+            "ingest_script":  INGEST_PAYMENTS_SCRIPT,
+        },
+        trigger_rule="none_failed",
+    )
+
+    t_ingest_ratings = BashOperator(
+        task_id="ingest_ratings_spark",
+        bash_command="""
+TARGET_DATE="{{ ti.xcom_pull(key='target_date', task_ids='run_simulator') }}"
+
+docker exec de-spark-master \
+  /opt/spark/bin/spark-submit \
+    --master {{ params.spark_master }} \
+    --deploy-mode client \
+    --driver-memory 512m \
+    --executor-memory 512m \
+    --executor-cores 1 \
+    --conf spark.hadoop.fs.s3a.endpoint={{ params.minio_endpoint }} \
+    --conf spark.hadoop.fs.s3a.access.key={{ params.minio_key }} \
+    --conf spark.hadoop.fs.s3a.secret.key={{ params.minio_secret }} \
+    --conf spark.hadoop.fs.s3a.path.style.access=true \
+    --conf spark.hadoop.fs.s3a.connection.ssl.enabled=false \
+    {{ params.ingest_script }} \
+    --target-date "$TARGET_DATE" \
+    --minio-key {{ params.minio_key }} \
+    --minio-secret {{ params.minio_secret }}
+""",
+        params={
+            "spark_master":   SPARK_MASTER,
+            "minio_endpoint": MINIO_ENDPOINT,
+            "minio_key":      MINIO_KEY,
+            "minio_secret":   MINIO_SECRET,
+            "ingest_script":  INGEST_RATINGS_SCRIPT,
         },
         trigger_rule="none_failed",
     )
@@ -211,4 +273,4 @@ docker exec de-spark-master \
 
     t_check >> [t_init, t_simulate]
     t_init  >> t_simulate
-    t_simulate >> t_ingest_trips >> t_summary
+    t_simulate >> [t_ingest_trips, t_ingest_payments, t_ingest_ratings] >> t_summary
