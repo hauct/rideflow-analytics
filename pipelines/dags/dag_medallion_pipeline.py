@@ -1,18 +1,13 @@
 """
-dag_bronze_ingestion.py
+dag_medallion_pipeline.py
 -----------------------
-Pipeline: Simulator → Bronze Delta Lake (MinIO)
+Pipeline: Simulator → Bronze Delta Lake (Raw) → Silver Delta Lake (Cleansed)
 
 Lý do dùng BashOperator + docker exec thay SparkSubmitOperator:
   - SparkSubmitOperator cần spark-submit binary trong Airflow container
   - Airflow container không có Java/Spark → JAVA_HOME not set → fail
   - docker exec de-spark-master spark-submit → chạy trực tiếp trong Spark container
   - Cần /var/run/docker.sock mount trong docker-compose (đã có sẵn)
-
-Fix trong version này:
-  - Dùng BashOperator + docker exec (pattern đúng với setup này)
-  - Chuyển sang gen data theo ngày (daily batch) với target_date tiến tới trên file state
-  - Partition Delta table bằng date thay vì hour theo nhu cầu user
 """
 
 from __future__ import annotations
@@ -44,11 +39,16 @@ MINIO_KEY      = Variable.get("MINIO_ACCESS_KEY",  default_var="minioadmin")
 MINIO_SECRET   = Variable.get("MINIO_SECRET_KEY",  default_var="minioadmin123")
 MINIO_ENDPOINT = Variable.get("MINIO_ENDPOINT",    default_var="http://minio:9000")
 
-# Path của ingest_trips.py bên trong Spark container
+# Path của python scripts bên trong Spark container
 # (mount từ ./pipelines → /opt/spark-apps)
 INGEST_TRIPS_SCRIPT    = "/opt/spark-apps/bronze/ingest_trips.py"
 INGEST_PAYMENTS_SCRIPT = "/opt/spark-apps/bronze/ingest_payments.py"
 INGEST_RATINGS_SCRIPT  = "/opt/spark-apps/bronze/ingest_ratings.py"
+
+CLEANSE_TRIPS_SCRIPT    = "/opt/spark-apps/silver/cleanse_trips.py"
+CLEANSE_PAYMENTS_SCRIPT = "/opt/spark-apps/silver/cleanse_payments.py"
+CLEANSE_RATINGS_SCRIPT  = "/opt/spark-apps/silver/cleanse_ratings.py"
+
 SPARK_MASTER           = "spark://spark-master:7077"
 
 
@@ -61,9 +61,6 @@ def _get_simulator():
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
     return module
-
-
-
 
 
 # ─── Tasks ────────────────────────────────────────────────────────────────────
@@ -127,7 +124,7 @@ def log_summary(**context):
         """)
         cur.execute(
             "INSERT INTO pipeline_runs (target_date, dag_id, status) VALUES (%s, %s, %s)",
-            (target_date, "rideflow_bronze_ingestion", "success")
+            (target_date, "rideflow_medallion_pipeline", "success")
         )
         conn.commit()
         cur.close(); conn.close()
@@ -139,14 +136,14 @@ def log_summary(**context):
 # ─── DAG ──────────────────────────────────────────────────────────────────────
 
 with DAG(
-    dag_id="rideflow_bronze_ingestion",
-    description="Simulator → JSONL → Bronze Delta Lake (MinIO)",
+    dag_id="rideflow_medallion_pipeline",
+    description="Simulator → Bronze Delta Lake (MinIO) → Silver Delta Lake",
     default_args=DEFAULT_ARGS,
     start_date=datetime(2026, 3, 20),
     schedule_interval="*/15 * * * *",
     catchup=False,
     max_active_runs=1,
-    tags=["rideflow", "bronze", "spark"],
+    tags=["rideflow", "bronze", "silver", "spark"],
 ) as dag:
 
     t_check = BranchPythonOperator(
@@ -165,13 +162,8 @@ with DAG(
         trigger_rule="none_failed",
     )
 
-    # ── BashOperator + docker exec ────────────────────────────────────────────
-    # Chạy spark-submit bên trong Spark container (có đủ Java + JARs).
-    # FIX: window value có space → phải wrap bằng single quotes trong bash
-    #      "2026-03-22 09:15" nếu không quote sẽ bị tách thành 2 args
-    t_ingest_trips = BashOperator(
-        task_id="ingest_trips_spark",
-        bash_command="""
+    # ── Spark Submit Template ────────────────────────────────────────────
+    SPARK_SUBMIT_CMD = """
 TARGET_DATE="{{ ti.xcom_pull(key='target_date', task_ids='run_simulator') }}"
 
 docker exec de-spark-master \
@@ -186,84 +178,35 @@ docker exec de-spark-master \
     --conf spark.hadoop.fs.s3a.secret.key={{ params.minio_secret }} \
     --conf spark.hadoop.fs.s3a.path.style.access=true \
     --conf spark.hadoop.fs.s3a.connection.ssl.enabled=false \
-    {{ params.ingest_script }} \
+    {{ params.script }} \
     --target-date "$TARGET_DATE" \
     --minio-key {{ params.minio_key }} \
     --minio-secret {{ params.minio_secret }}
-""",
-        params={
-            "spark_master":   SPARK_MASTER,
-            "minio_endpoint": MINIO_ENDPOINT,
-            "minio_key":      MINIO_KEY,
-            "minio_secret":   MINIO_SECRET,
-            "ingest_script":  INGEST_TRIPS_SCRIPT,
-        },
-        trigger_rule="none_failed",
-    )
+"""
 
-    t_ingest_payments = BashOperator(
-        task_id="ingest_payments_spark",
-        bash_command="""
-TARGET_DATE="{{ ti.xcom_pull(key='target_date', task_ids='run_simulator') }}"
+    def create_spark_task(task_id: str, script_path: str):
+        return BashOperator(
+            task_id=task_id,
+            bash_command=SPARK_SUBMIT_CMD,
+            params={
+                "spark_master":   SPARK_MASTER,
+                "minio_endpoint": MINIO_ENDPOINT,
+                "minio_key":      MINIO_KEY,
+                "minio_secret":   MINIO_SECRET,
+                "script":  script_path,
+            },
+            trigger_rule="none_failed",
+        )
 
-docker exec de-spark-master \
-  /opt/spark/bin/spark-submit \
-    --master {{ params.spark_master }} \
-    --deploy-mode client \
-    --driver-memory 512m \
-    --executor-memory 512m \
-    --executor-cores 1 \
-    --conf spark.hadoop.fs.s3a.endpoint={{ params.minio_endpoint }} \
-    --conf spark.hadoop.fs.s3a.access.key={{ params.minio_key }} \
-    --conf spark.hadoop.fs.s3a.secret.key={{ params.minio_secret }} \
-    --conf spark.hadoop.fs.s3a.path.style.access=true \
-    --conf spark.hadoop.fs.s3a.connection.ssl.enabled=false \
-    {{ params.ingest_script }} \
-    --target-date "$TARGET_DATE" \
-    --minio-key {{ params.minio_key }} \
-    --minio-secret {{ params.minio_secret }}
-""",
-        params={
-            "spark_master":   SPARK_MASTER,
-            "minio_endpoint": MINIO_ENDPOINT,
-            "minio_key":      MINIO_KEY,
-            "minio_secret":   MINIO_SECRET,
-            "ingest_script":  INGEST_PAYMENTS_SCRIPT,
-        },
-        trigger_rule="none_failed",
-    )
+    # Bronze Layer Tasks
+    t_ingest_trips = create_spark_task("ingest_trips_bronze", INGEST_TRIPS_SCRIPT)
+    t_ingest_payments = create_spark_task("ingest_payments_bronze", INGEST_PAYMENTS_SCRIPT)
+    t_ingest_ratings = create_spark_task("ingest_ratings_bronze", INGEST_RATINGS_SCRIPT)
 
-    t_ingest_ratings = BashOperator(
-        task_id="ingest_ratings_spark",
-        bash_command="""
-TARGET_DATE="{{ ti.xcom_pull(key='target_date', task_ids='run_simulator') }}"
-
-docker exec de-spark-master \
-  /opt/spark/bin/spark-submit \
-    --master {{ params.spark_master }} \
-    --deploy-mode client \
-    --driver-memory 512m \
-    --executor-memory 512m \
-    --executor-cores 1 \
-    --conf spark.hadoop.fs.s3a.endpoint={{ params.minio_endpoint }} \
-    --conf spark.hadoop.fs.s3a.access.key={{ params.minio_key }} \
-    --conf spark.hadoop.fs.s3a.secret.key={{ params.minio_secret }} \
-    --conf spark.hadoop.fs.s3a.path.style.access=true \
-    --conf spark.hadoop.fs.s3a.connection.ssl.enabled=false \
-    {{ params.ingest_script }} \
-    --target-date "$TARGET_DATE" \
-    --minio-key {{ params.minio_key }} \
-    --minio-secret {{ params.minio_secret }}
-""",
-        params={
-            "spark_master":   SPARK_MASTER,
-            "minio_endpoint": MINIO_ENDPOINT,
-            "minio_key":      MINIO_KEY,
-            "minio_secret":   MINIO_SECRET,
-            "ingest_script":  INGEST_RATINGS_SCRIPT,
-        },
-        trigger_rule="none_failed",
-    )
+    # Silver Layer Tasks
+    t_cleanse_trips = create_spark_task("cleanse_trips_silver", CLEANSE_TRIPS_SCRIPT)
+    t_cleanse_payments = create_spark_task("cleanse_payments_silver", CLEANSE_PAYMENTS_SCRIPT)
+    t_cleanse_ratings = create_spark_task("cleanse_ratings_silver", CLEANSE_RATINGS_SCRIPT)
 
     t_summary = PythonOperator(
         task_id="log_summary",
@@ -271,6 +214,17 @@ docker exec de-spark-master \
         trigger_rule="all_done",
     )
 
+    # ── Dependencies ────────────────────────────────────────────────────────
     t_check >> [t_init, t_simulate]
     t_init  >> t_simulate
-    t_simulate >> [t_ingest_trips, t_ingest_payments, t_ingest_ratings] >> t_summary
+
+    # Simulate -> Bronze
+    t_simulate >> [t_ingest_trips, t_ingest_payments, t_ingest_ratings]
+    
+    # Bronze -> Silver (Từng domain sẽ chảy data độc lập, Trip Ingest xong sẽ kéo Trip Cleanse ngay)
+    t_ingest_trips >> t_cleanse_trips
+    t_ingest_payments >> t_cleanse_payments
+    t_ingest_ratings >> t_cleanse_ratings
+
+    # Tất cả Silver hoàn tất -> Ghi Log Summary
+    [t_cleanse_trips, t_cleanse_payments, t_cleanse_ratings] >> t_summary

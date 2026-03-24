@@ -288,6 +288,9 @@ def generate_window(state: dict, window_start: datetime) -> tuple:
                 round((12_000 + dist_km * 5_500) * surge
                       * random.uniform(0.9, 1.1) / 1000) * 1000
             ))
+            # INJECT ERROR: Negative Fare (2%)
+            if random.random() < 0.02:
+                fare_vnd = -fare_vnd
         else:
             fare_vnd = 0
 
@@ -295,6 +298,11 @@ def generate_window(state: dict, window_start: datetime) -> tuple:
         state["trip_counter"] += 1
         trip_id = f"TRP{str(state['trip_counter']).zfill(8)}"
         batch_id = window_start.strftime("%Y%m%d_%H%M")
+
+        rider_id_val = rider["rider_id"]
+        # INJECT ERROR: Null rider_id (1%)
+        if random.random() < 0.01:
+            rider_id_val = None
 
         trips.append({
             "_meta": {
@@ -305,7 +313,7 @@ def generate_window(state: dict, window_start: datetime) -> tuple:
             },
             "trip_id":      trip_id,
             "driver_id":    driver_id,
-            "rider_id":     rider["rider_id"],
+            "rider_id":     rider_id_val,
             "request_time": request_time.isoformat(),
             "pickup_time":  pickup_time.isoformat() if pickup_time else None,
             "dropoff_time": dropoff_time.isoformat() if dropoff_time else None,
@@ -333,6 +341,12 @@ def generate_window(state: dict, window_start: datetime) -> tuple:
                            pick(["success", "refunded", "failed"], [0.965, 0.025, 0.010])
             if pay_status != "success":
                 final = 0
+
+            # INJECT ERROR: Unknown Payment Method (2%), Negative Final Amount (2%)
+            if random.random() < 0.02:
+                method = "unknown_method"
+            if random.random() < 0.02:
+                final = -1 * abs(final) if final != 0 else -50000
 
             state["pay_counter"] += 1
             pay_time = dropoff_time + timedelta(seconds=random.randint(2, 30))
@@ -362,6 +376,11 @@ def generate_window(state: dict, window_start: datetime) -> tuple:
             ]:
                 if ratee_id and random.random() < rate_prob:
                     stars = random.choices([1, 2, 3, 4, 5], weights=star_w)[0]
+                    
+                    # INJECT ERROR: Stars out of bounds (2%)
+                    if random.random() < 0.02:
+                        stars = random.choice([0, 6, 9])
+
                     tags  = "|".join(random.sample(
                         POSITIVE_TAGS if stars >= 4 else NEGATIVE_TAGS,
                         k=random.randint(1, 2)

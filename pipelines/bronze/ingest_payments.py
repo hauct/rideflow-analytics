@@ -9,18 +9,18 @@ from pyspark.sql.types import StructType, StructField, StringType, IntegerType, 
 # ─── Schema Definition ────────────────────────────────────────────────────────
 
 PAYMENTS_SCHEMA = StructType([
-    StructField("payment_id",         StringType(),    False),
-    StructField("trip_id",            StringType(),    False),
-    StructField("rider_id",           StringType(),    False),
-    StructField("payment_time",       TimestampType(), False),
-    StructField("payment_method",     StringType(),    False),
-    StructField("fare_vnd",           IntegerType(),   False),
+    StructField("payment_id",         StringType(),    True),
+    StructField("trip_id",            StringType(),    True),
+    StructField("rider_id",           StringType(),    True),
+    StructField("payment_time",       TimestampType(), True),
+    StructField("payment_method",     StringType(),    True),
+    StructField("fare_vnd",           IntegerType(),   True),
     StructField("promo_code",         StringType(),    True),
-    StructField("discount_vnd",       IntegerType(),   False),
-    StructField("final_amount_vnd",   IntegerType(),   False),
-    StructField("payment_status",     StringType(),    False),
-    StructField("platform_fee_vnd",   IntegerType(),   False),
-    StructField("driver_earning_vnd", IntegerType(),   False),
+    StructField("discount_vnd",       IntegerType(),   True),
+    StructField("final_amount_vnd",   IntegerType(),   True),
+    StructField("payment_status",     StringType(),    True),
+    StructField("platform_fee_vnd",   IntegerType(),   True),
+    StructField("driver_earning_vnd", IntegerType(),   True),
 ])
 
 # ─── Config ───────────────────────────────────────────────────────────────────
@@ -41,21 +41,8 @@ def partition_path(entity: str, target_date: str) -> Path:
 
 def validate_and_clean(df):
     """
-    Validate data quality:
-    - Remove duplicates
-    - Filter valid status
+    Bronze Layer: Keep as-is. Data quality checks are moved to Silver Layer.
     """
-    from pyspark.sql.functions import col
-    
-    # Remove duplicates
-    df = df.dropDuplicates(["payment_id"])
-    
-    # Filter valid status
-    df = df.filter(col("payment_status").isin(["success", "refunded", "failed"]))
-    
-    # Check required fields
-    df = df.filter(col("payment_id").isNotNull() & col("trip_id").isNotNull())
-    
     return df
 
 def ingest_payments(target_date: str, minio_key: str, minio_secret: str):

@@ -24,23 +24,23 @@ from pyspark.sql.types import StructType, StructField, StringType, DoubleType, I
 # ─── Schema Definition ────────────────────────────────────────────────────────
 
 TRIPS_SCHEMA = StructType([
-    StructField("trip_id",       StringType(),    False),
+    StructField("trip_id",       StringType(),    True),
     StructField("driver_id",     StringType(),    True),   # NULL nếu no_driver
-    StructField("rider_id",      StringType(),    False),
-    StructField("request_time",  TimestampType(), False),
+    StructField("rider_id",      StringType(),    True),
+    StructField("request_time",  TimestampType(), True),
     StructField("pickup_time",   TimestampType(), True),
     StructField("dropoff_time",  TimestampType(), True),
-    StructField("status",        StringType(),    False),
-    StructField("city",          StringType(),    False),
-    StructField("pickup_zone",   StringType(),    False),
-    StructField("pickup_lat",    DoubleType(),    False),
-    StructField("pickup_lng",    DoubleType(),    False),
-    StructField("dropoff_zone",  StringType(),    False),
-    StructField("dropoff_lat",   DoubleType(),    False),
-    StructField("dropoff_lng",   DoubleType(),    False),
-    StructField("distance_km",   DoubleType(),    False),
+    StructField("status",        StringType(),    True),
+    StructField("city",          StringType(),    True),
+    StructField("pickup_zone",   StringType(),    True),
+    StructField("pickup_lat",    DoubleType(),    True),
+    StructField("pickup_lng",    DoubleType(),    True),
+    StructField("dropoff_zone",  StringType(),    True),
+    StructField("dropoff_lat",   DoubleType(),    True),
+    StructField("dropoff_lng",   DoubleType(),    True),
+    StructField("distance_km",   DoubleType(),    True),
     StructField("duration_min",  IntegerType(),   True),
-    StructField("fare_vnd",      IntegerType(),   False),
+    StructField("fare_vnd",      IntegerType(),   True),
 ])
 
 # ─── Config ───────────────────────────────────────────────────────────────────
@@ -62,25 +62,8 @@ def partition_path(entity: str, target_date: str) -> Path:
 
 def validate_and_clean(df):
     """
-    Validate data quality:
-    - Remove duplicates
-    - Filter invalid status
-    - Check required fields
+    Bronze Layer: Keep as-is. Data quality checks are moved to Silver Layer.
     """
-    from pyspark.sql.functions import col
-    
-    # Remove duplicates
-    df = df.dropDuplicates(["trip_id"])
-    
-    # Filter valid status
-    df = df.filter(col("status").isin(["completed", "cancelled", "no_driver"]))
-    
-    # Filter valid cities
-    df = df.filter(col("city").isin(["HCMC", "HANOI"]))
-    
-    # Remove rows with NULL trip_id or rider_id
-    df = df.filter(col("trip_id").isNotNull() & col("rider_id").isNotNull())
-    
     return df
 
 

@@ -9,15 +9,15 @@ from pyspark.sql.types import StructType, StructField, StringType, IntegerType, 
 # ─── Schema Definition ────────────────────────────────────────────────────────
 
 RATINGS_SCHEMA = StructType([
-    StructField("rating_id",  StringType(),    False),
-    StructField("trip_id",    StringType(),    False),
-    StructField("rater_id",   StringType(),    False),
-    StructField("ratee_id",   StringType(),    False),
-    StructField("rater_type", StringType(),    False),
-    StructField("ratee_type", StringType(),    False),
-    StructField("stars",      IntegerType(),   False),
+    StructField("rating_id",  StringType(),    True),
+    StructField("trip_id",    StringType(),    True),
+    StructField("rater_id",   StringType(),    True),
+    StructField("ratee_id",   StringType(),    True),
+    StructField("rater_type", StringType(),    True),
+    StructField("ratee_type", StringType(),    True),
+    StructField("stars",      IntegerType(),   True),
     StructField("tags",       StringType(),    True),
-    StructField("rated_at",   TimestampType(), False),
+    StructField("rated_at",   TimestampType(), True),
 ])
 
 # ─── Config ───────────────────────────────────────────────────────────────────
@@ -38,21 +38,8 @@ def partition_path(entity: str, target_date: str) -> Path:
 
 def validate_and_clean(df):
     """
-    Validate data quality:
-    - Remove duplicates
-    - Filter valid stars 1-5
+    Bronze Layer: Keep as-is. Data quality checks are moved to Silver Layer.
     """
-    from pyspark.sql.functions import col
-    
-    # Remove duplicates
-    df = df.dropDuplicates(["rating_id"])
-    
-    # Valid stars
-    df = df.filter(col("stars").between(1, 5))
-    
-    # Required fields
-    df = df.filter(col("rating_id").isNotNull() & col("trip_id").isNotNull())
-    
     return df
 
 def ingest_ratings(target_date: str, minio_key: str, minio_secret: str):
