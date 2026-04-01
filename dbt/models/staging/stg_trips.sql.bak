@@ -1,0 +1,18 @@
+{{ config(materialized='view') }}
+
+SELECT
+    trip_id,
+    driver_id,
+    rider_id,
+    request_time,
+    pickup_time,
+    dropoff_time,
+    status,
+    city,
+    pickup_zone,
+    dropoff_zone,
+    distance_km,
+    duration_min,
+    fare_vnd,
+    ingest_date
+FROM delta.`s3a://rideflow/silver/trips`

@@ -10,6 +10,11 @@ pyarrow==14.0.1
 # Delta Lake
 delta-spark==3.0.0
 
+# dbt
+dbt-core==1.7.0
+dbt-spark[PySpark]==1.7.1
+protobuf<4.25.0
+
 # Database
 psycopg2-binary==2.9.9
 sqlalchemy==2.0.45

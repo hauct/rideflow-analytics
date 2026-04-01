@@ -40,9 +40,18 @@ RUN cd ${SPARK_HOME}/jars && \
 # ── Directories (gộp 1 layer) ────────────────────────────────────────────────
 RUN mkdir -p /home/spark/.local/share/jupyter/runtime \
              /opt/spark-notebooks /opt/spark-data /opt/spark-apps \
-             /opt/spark-scripts /opt/spark-events /opt/shared && \
+             /opt/spark-scripts /opt/spark-events /opt/shared \
+             /opt/spark/conf && \
+    echo "spark.sql.extensions io.delta.sql.DeltaSparkSessionExtension" >> /opt/spark/conf/spark-defaults.conf && \
+    echo "spark.sql.catalog.spark_catalog org.apache.spark.sql.delta.catalog.DeltaCatalog" >> /opt/spark/conf/spark-defaults.conf && \
+    echo "spark.hadoop.fs.s3a.endpoint http://minio:9000" >> /opt/spark/conf/spark-defaults.conf && \
+    echo "spark.hadoop.fs.s3a.access.key minioadmin" >> /opt/spark/conf/spark-defaults.conf && \
+    echo "spark.hadoop.fs.s3a.secret.key minioadmin123" >> /opt/spark/conf/spark-defaults.conf && \
+    echo "spark.hadoop.fs.s3a.path.style.access true" >> /opt/spark/conf/spark-defaults.conf && \
+    echo "spark.hadoop.fs.s3a.impl org.apache.hadoop.fs.s3a.S3AFileSystem" >> /opt/spark/conf/spark-defaults.conf && \
+    echo "spark.hadoop.fs.s3a.connection.ssl.enabled false" >> /opt/spark/conf/spark-defaults.conf && \
     chown -R spark:spark /home/spark /opt/spark-notebooks /opt/spark-data \
-             /opt/spark-apps /opt/spark-scripts /opt/spark-events /opt/shared
+             /opt/spark-apps /opt/spark-scripts /opt/spark-events /opt/shared /opt/spark/conf
 
 USER spark
 ENV SHELL=/bin/bash

@@ -1,0 +1,25 @@
+name: "rideflow"
+version: "1.0.0"
+config-version: 2
+
+profile: "rideflow"
+
+model-paths: ["models"]
+seed-paths: ["seeds"]
+test-paths: ["tests"]
+macro-paths: ["macros"]
+
+target-path: "target"
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+models:
+  rideflow:
+    materialized: table
+    file_format: delta
+    location_root: "s3a://rideflow/gold"
+    staging:
+      materialized: view
+    marts:
+      materialized: table

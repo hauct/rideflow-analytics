@@ -208,6 +208,42 @@ docker exec de-spark-master \
     t_cleanse_payments = create_spark_task("cleanse_payments_silver", CLEANSE_PAYMENTS_SCRIPT)
     t_cleanse_ratings = create_spark_task("cleanse_ratings_silver", CLEANSE_RATINGS_SCRIPT)
 
+    # Gold Layer: dbt run
+    t_dbt_run = BashOperator(
+        task_id="dbt_run_gold",
+        bash_command="""docker exec de-jupyter-spark //bin/bash -c "cd /opt/dbt && dbt run" """,
+        trigger_rule="all_success",
+    )
+
+    t_export_gold = BashOperator(
+        task_id="export_gold_postgres",
+        bash_command="""
+docker exec de-spark-master \
+  /opt/spark/bin/spark-submit \
+    --master {{ params.spark_master }} \
+    --deploy-mode client \
+    --driver-memory 512m \
+    --executor-memory 512m \
+    --executor-cores 1 \
+    --conf spark.hadoop.fs.s3a.endpoint={{ params.minio_endpoint }} \
+    --conf spark.hadoop.fs.s3a.access.key={{ params.minio_key }} \
+    --conf spark.hadoop.fs.s3a.secret.key={{ params.minio_secret }} \
+    --conf spark.hadoop.fs.s3a.path.style.access=true \
+    --conf spark.hadoop.fs.s3a.connection.ssl.enabled=false \
+    /opt/spark-apps/gold/export_gold_postgres.py \
+    --postgresql-url \"jdbc:postgresql://postgres:5432/rideflow\" \
+    --postgresql-user \"dataengineer\" \
+    --postgresql-password \"dataengineer123\"
+""",
+        params={
+            "spark_master":   SPARK_MASTER,
+            "minio_endpoint": MINIO_ENDPOINT,
+            "minio_key":      MINIO_KEY,
+            "minio_secret":   MINIO_SECRET,
+        },
+        trigger_rule="all_success",
+    )
+
     t_summary = PythonOperator(
         task_id="log_summary",
         python_callable=log_summary,
@@ -226,5 +262,5 @@ docker exec de-spark-master \
     t_ingest_payments >> t_cleanse_payments
     t_ingest_ratings >> t_cleanse_ratings
 
-    # Tất cả Silver hoàn tất -> Ghi Log Summary
-    [t_cleanse_trips, t_cleanse_payments, t_cleanse_ratings] >> t_summary
+    # Tất cả Silver hoàn tất -> dbt run (Gold Layer) -> Ghi export postgres -> Ghi Log Summary
+    [t_cleanse_trips, t_cleanse_payments, t_cleanse_ratings] >> t_dbt_run >> t_export_gold >> t_summary

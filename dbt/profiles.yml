@@ -1,0 +1,18 @@
+rideflow:
+  target: dev
+  outputs:
+    dev:
+      type: spark
+      method: session
+      schema: gold
+      host: localhost
+      threads: 4
+      conf:
+        spark.sql.extensions: "io.delta.sql.DeltaSparkSessionExtension"
+        spark.sql.catalog.spark_catalog: "org.apache.spark.sql.delta.catalog.DeltaCatalog"
+        spark.hadoop.fs.s3a.endpoint: "http://minio:9000"
+        spark.hadoop.fs.s3a.access.key: "minioadmin"
+        spark.hadoop.fs.s3a.secret.key: "minioadmin123"
+        spark.hadoop.fs.s3a.path.style.access: "true"
+        spark.hadoop.fs.s3a.connection.ssl.enabled: "false"
+        spark.hadoop.fs.s3a.impl: "org.apache.hadoop.fs.s3a.S3AFileSystem"

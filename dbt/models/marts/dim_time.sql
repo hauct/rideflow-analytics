@@ -1,0 +1,43 @@
+{{ config(
+    materialized='incremental',
+    file_format='delta',
+    location_root='s3a://rideflow/gold',
+    unique_key='time_id',
+    incremental_strategy='insert_overwrite',
+    partition_by='date'
+) }}
+
+WITH time_data AS (
+    SELECT 
+        DISTINCT
+        request_time AS time_id,
+        DATE(request_time) AS date,
+        HOUR(request_time) AS hour,
+        MINUTE(request_time) AS minute,
+        DAYOFWEEK(request_time) AS day_of_week,
+        DAYOFMONTH(request_time) AS day_of_month,
+        MONTH(request_time) AS month,
+        YEAR(request_time) AS year,
+        CASE 
+            WHEN HOUR(request_time) IN (7,8,9,17,18,19) THEN 'peak'
+            ELSE 'off_peak'
+        END AS period_of_day
+    FROM {{ ref('fact_trips') }}
+    {% if is_incremental() %}
+    WHERE DATE(request_time) >= (
+        SELECT COALESCE(MAX(date), '1970-01-01') 
+        FROM {{ this }}
+    )
+    {% endif %}
+)
+SELECT 
+    time_id,
+    date,
+    hour,
+    minute,
+    day_of_week,
+    day_of_month,
+    month,
+    year,
+    period_of_day
+FROM time_data

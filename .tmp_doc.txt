@@ -1,0 +1,437 @@
+🚗
+RideFlow
+Analytics Platform
+Grab-style Ride-hailing & Delivery — End-to-End Data Platform
+⚙️
+Data Pipeline
+Spark + Delta Lake
+Airflow + Incremental
+📊
+Analytics Eng.
+dbt + SQL
+Metabase Dashboard
+🤖
+AI Add-on
+Demand Forecast
+Anomaly Detection
+📁
+Showcase
+GitHub + Live Demo
+Architecture Docs
+📅 16 weekends
+~4-5h/weekend
+🎯 Middle-level
+Realistic scope
+🔄 Incremental
+Real-time simulation
+💼 Portfolio-ready
+Full showcase
+SECTION 1
+Business Context
+Bài toán thực tế — domain quen thuộc, dễ explain trong interview
+🎯 Bài toán
+Một startup ride-hailing khu vực (TP.HCM + Hà Nội) có hàng chục nghìn chuyến/ngày nhưng 
+không có visibility thực sự về operations
+. Dashboard cuối ngày mới có data, fraud/cancellation cao mà không rõ nguyên nhân, driver và rider chỉ là số ID.
+❌  Pain Points
+Không biết giờ nào, khu vực nào thiếu driver
+Cancellation rate cao — không rõ nguyên nhân
+Driver earnings chênh lệch — khó giữ chân driver tốt
+Revenue report lag 24h — không kịp ra quyết định
+✅  RideFlow giải quyết
+Demand heatmap theo giờ + zone — dispatch thông minh
+Funnel: request → match → pickup → complete → rate
+Driver scorecard → incentive program data-driven
+Near real-time dashboard — cập nhật mỗi 15 phút
+📐 Data Sources
+Source
+Mô tả
+Volume/day
+Ingest type
+Phân tích
+🚗 Trip events
+Lifecycle 1 chuyến đi
+~50k trips
+Simulator → JSONL
+Core KPIs, funnel
+📱 App events
+Click, cancel, search
+~500k events
+Kafka stream
+Drop-off analysis
+💳 Payments
+Fare, promo, refund
+~55k rows
+Từ trip events
+Revenue, GMV
+⭐ Ratings
+Rider ↔ Driver
+~75k rows
+Từ trip events
+Quality scoring
+📍 GPS pings
+Driver location/30s
+~200k rows
+Kafka stream
+Heatmap, ETA
+SECTION 2
+Data Architecture
+Incremental simulation → JSONL partition → Medallion Lakehouse
+🔄 Incremental Data Flow — Thiết kế cốt lõi
+Thay vì dump CSV một lần, mỗi 15 phút simulator sinh ra một "window" data mới dạng JSONL — giống hệ thống thật đang ghi log liên tục. Airflow DAG detect file mới → ingest vào Bronze Delta → Silver → Gold. Dashboard luôn fresh.
+🚗 Simulator — Sinh data có state
+Cách hoạt động
+Lần đầu: khởi tạo pool 500 drivers + 2000 riders → lưu state.json
+Các lần sau: dùng lại pool cũ — rider_id/driver_id overlap realistic
+Thêm nhỏ giọt: 0-3 drivers mới, 5-20 riders mới mỗi batch
+trip_counter tăng liên tục — trip_id không bao giờ trùng
+Demand theo giờ: rush hour 7-9h, 17-19h tự nhiên từ DEMAND_BY_HOUR
+Output mỗi 15 phút
+Format: JSONL (1 event / dòng — append-friendly)
+Path: data/raw/trips/date=2026-03-21/hour=14/batch_1430.jsonl
+~40-60 trips / batch (biến động theo giờ)
+Riders/drivers mix cũ + mới → realistic churn
+Denormalized nhẹ: kèm driver_tier, rider_segment, payment_method
+📁 Partition Structure trên MinIO
+# Raw JSONL (trước Bronze — local filesystem)
+data/raw/trips/
+  date=2026-03-21/
+    hour=08/
+      batch_0800.jsonl   ← 58 trips, 39.9 KB
+      batch_0815.jsonl   ← 45 trips, 30.9 KB
+      batch_0830.jsonl   ← ...
+    hour=09/ ...
+# Bronze Delta Lake (MinIO s3a://rideflow/bronze/)
+s3a://rideflow/bronze/trips/
+  _delta_log/            ← transaction log (ACID)
+  _date=2026-03-21/
+    _hour=8/
+      part-00000-xxx.snappy.parquet
+      part-00001-xxx.snappy.parquet
+    _hour=9/ ...
+# Silver + Gold tương tự — cùng partition strategy
+s3a://rideflow/silver/trips/  ...
+s3a://rideflow/gold/fact_trips/  ...
+⏱️  Timeline mỗi 15 phút (Airflow DAG: bronze_trips_ingest)
+Thời điểm
+Task
+Chi tiết
+Output
+T + 0:00
+run_simulator
+Gọi simulator.py — sinh JSONL cho window 15 phút. Detect xác suất rush hour, thêm new users nhỏ giọt.
+batch_HHMM.jsonl
+T + 0:30
+validate_schema
+Kiểm tra: file tồn tại, JSON hợp lệ, columns đủ, volume 1-500 trips, completion rate > 50%. Fail sớm nếu lỗi — không waste Spark.
+Pass / Fail + error log
+T + 1:00
+ingest_to_bronze
+PySpark đọc JSONL → cast types → append Delta Bronze. Partition by _date/_hour. mergeSchema=true cho schema evolution.
+Delta partition trên MinIO
+T + 4:00
+log_metrics
+Ghi vào Postgres table pipeline_runs: rows, GMV, completion rate. trigger_rule=all_done — chạy kể cả khi ingest fail.
+Monitoring record
+T + 6:00
+Silver DAG
+PySpark đọc Bronze partition mới → clean, dedup, enrich → append Silver Delta. Chỉ process partition mới nhất.
+Silver Delta updated
+T + 10:00
+dbt incremental
+dbt chạy incremental models: chỉ process rows có request_time > max trong target. KPI models tự cập nhật.
+Gold tables refreshed
+T + 12:00
+Metabase query
+Dashboard query Gold layer. Data fresh trong ~12 phút so với event thực tế.
+Dashboard updated
+🏗️  Medallion Architecture — 3 Layers
+🥉  BRONZE — Raw Landing
+Raw JSONL → Delta Lake, append-only — không transform
+Partition: _date / _hour (Hive-style)
+Retention: 60 ngày — có thể replay bất cứ lúc nào
+Great Expectations: schema + volume + freshness checks
+Time travel: query data của 3h trước khi cần debug
+🛠️  Stack
+Airflow DAG (run_simulator + ingest_to_bronze)
+Delta Lake on MinIO (ACID, time travel)
+Great Expectations (quality gates)
+Postgres table pipeline_runs (monitoring)
+🥈  SILVER — Clean & Conform
+PySpark: dedup trip_id, cast types, mask PII (phone)
+Validate lat/lng bounds (HCMC/HN geography check)
+Enrich: join driver_tier, rider_segment từ state
+dbt staging: stg_trips, stg_drivers, stg_riders
+dbt tests: not_null, unique, accepted_values, relationships
+🛠️  Stack
+PySpark incremental (chỉ đọc partition mới)
+dbt Core — staging + intermediate models
+Delta Lake ACID (no dirty reads concurrent writes)
+pytest cho PySpark unit tests
+🥇  GOLD — Business Ready
+fact_trips: 1 row / trip (Kimball star schema)
+dim_driver, dim_rider, dim_zone, dim_time
+daily_trip_summary, driver_weekly_scorecard
+demand_heatmap: zone × hour aggregation
+dbt docs: auto-gen catalog + lineage graph
+🛠️  Stack
+dbt incremental mart models
+Delta Lake Z-order optimization
+Spark SQL / Trino (Metabase query engine)
+dbt source freshness — alert khi data stale
+🤖 AI Add-on (Phase 4 — không block pipeline)
+AI layer chỉ READ từ Gold — pipeline core chạy hoàn toàn độc lập. Nếu AI có bug, dashboard vẫn hoạt động bình thường.
+🔮  Demand Forecasting (Prophet)
+Input: demand_heatmap Gold table (7 ngày gần nhất)
+Model: Prophet — đơn giản, interpretable, không cần GPU
+Output: forecast trips theo zone × hour (next 24h)
+Airflow DAG retrain mỗi tuần (Sunday 2:00 AM)
+Kết quả push vào Gold demand_forecast table → Metabase
+🚨  Anomaly Detection (Z-score)
+Monitor: cancellation_rate + driver_utilization theo giờ
+Z-score đơn giản — không cần ML phức tạp, explainable
+Threshold: |z| > 2.5 → ghi vào Postgres alerts table
+Metabase alert → email khi metric bất thường
+Root cause: SQL query tự động gắn theo mỗi alert
+SECTION 3
+Tech Stack
+Chỉ học 2 thứ mới — còn lại đã có sẵn từ khóa học
+✅  Đã có từ khóa học
+Apache Spark 3.5.1 — ETL, PySpark transformations
+Delta Lake 3.0 — ACID, time travel, schema evolution
+Apache Kafka — streaming ingestion (GPS, app events)
+MinIO (S3-compatible) — object storage
+PostgreSQL 15 — metadata, pipeline_runs, alerts
+Jupyter Lab — EDA, Silver job development
+Docker Compose + Makefile — infra đã cấu hình sẵn
+➕  Cần học thêm (2 thứ)
+Apache Airflow 2.8 — DAG scheduling, LocalExecutor
+  → 1-2 weekends: PythonOperator + schedule là đủ
+dbt Core 1.7 — SQL transform, tests, docs, lineage
+  → 2 weekends: biết SQL là học được ngay
+─
+Metabase — setup 30 phút, dùng ngay
+Prophet — pip install prophet, 1 weekend EDA là xong
+Công nghệ
+Dùng cho
+Có sẵn?
+Tuần học
+Lý do chọn (cho interview)
+Apache Spark 3.5.1
+ETL, Silver transformations
+✅
+0
+Unified batch+streaming, bạn đã quen
+Delta Lake 3.0
+ACID storage, time travel
+✅
+0
+Better CDC vs Iceberg, native Spark
+Apache Kafka
+GPS stream, app events
+✅
+0
+High throughput, replay-able
+MinIO
+Object storage
+✅
+0
+S3 API compatible, self-hosted
+Apache Airflow 2.8
+Pipeline orchestration, scheduling
+❌ Mới
+W1-2
+DAG-based, great UI, huge ecosystem
+dbt Core 1.7
+SQL transform, tests, docs
+❌ Mới
+W5-6
+Analytics Engineering best practice
+Metabase
+BI dashboard, drill-down
+❌ Mới
+W11
+Dễ setup, SQL-native, open source
+Prophet
+Demand forecasting
+❌ Mới
+W13
+Simple, interpretable, no GPU
+Great Expectations
+Data quality
+✅
+0
+Schema + volume + freshness checks
+PostgreSQL 15
+Metadata, alerts, monitoring
+✅
+0
+pipeline_runs + alerts tables
+SECTION 4
+16-Weekend Sprint Plan
+~4-5h/weekend — breakdown từng ngày, deliverable cụ thể
+PHASE 1  ·  W1-4
+Foundation & Incremental Simulator
+🎯 Phase goals
+Airflow basics
+Simulator setup
+Bronze DAG
+Hardening
+WK
+Focus
+Làm gì
+Done khi
+W1
+Airflow basics
+Thêm Airflow vào docker-compose. Viết DAG Hello World (PythonOperator, schedule, retry). Hiểu UI: DAGs, Logs, XCom.
+Airflow UI lên, DAG Hello World ✅ xanh
+W2
+Simulator setup
+Viết simulator.py với state.json. Test: --backfill 32 (8h data). Kiểm tra overlap rider_id giữa các batch, trip counter liên tục.
+32 JSONL files, state.json có 500d/2000r
+W3
+Bronze DAG
+Viết bronze_trips_ingest DAG (4 tasks). Test từng task: run_simulator → validate_schema → ingest_to_bronze → log_metrics. Verify Delta files trên MinIO.
+DAG chạy end-to-end, Delta partition trên MinIO
+W4
+Hardening
+Retry logic, dead letter handling, alert khi fail. Test idempotency (trigger 2 lần → không duplicate). Verify pipeline_runs table.
+Production-grade Bronze pipeline
+PHASE 2  ·  W5-8
+Silver Layer & dbt Foundation
+🎯 Phase goals
+dbt basics
+PySpark Silver
+dbt intermediate
+Tests + docs
+WK
+Focus
+Làm gì
+Done khi
+W5
+dbt basics
+Cài dbt-core + dbt-spark. Init project, connect tới Spark. Viết stg_trips staging model. Chạy dbt run + dbt test lần đầu.
+dbt project chạy, stg_trips pass
+W6
+PySpark Silver
+Silver PySpark job: dedup trip_id, validate lat/lng (HCMC/HN bounds), mask phone, cast types. Ghi Silver Delta incremental.
+Silver trips table, data quality 99%+
+W7
+dbt intermediate
+int_trip_enriched: join trips + implicit payment + rating fields. int_driver_daily: aggregation per driver per day.
+2 intermediate models, relationship tests pass
+W8
+Tests + docs
+Thêm 20+ dbt tests (not_null, unique, accepted_values, relationships). dbt docs generate → serve locally. Screenshot lineage.
+dbt docs site, lineage graph visible
+PHASE 3  ·  W9-12
+Gold Layer & Dashboard
+🎯 Phase goals
+Dimensional model
+KPI models
+Metabase + Dashboard 1
+Dashboard 2 + 3
+WK
+Focus
+Làm gì
+Done khi
+W9
+Dimensional model
+fact_trips (grain: 1 trip). dim_driver, dim_rider, dim_zone (HCMC districts), dim_time. Vẽ ERD diagram cho docs.
+Star schema 5 tables, ERD trong /docs/
+W10
+KPI models
+daily_trip_summary, driver_weekly_scorecard, demand_heatmap (zone × hour). dbt freshness test cho sources.
+3 Gold marts, query < 3s trên 200k rows
+W11
+Metabase + Dashboard 1
+Connect Metabase → Spark SQL. Dashboard Executive: GMV, trips, avg fare, cancellation rate theo ngày/tuần.
+Dashboard 1 live, 6 charts, filter theo city
+W12
+Dashboard 2 + 3
+Driver Scorecard: top/bottom drivers, earnings, tier distribution. Demand Heatmap: map view + hour pattern chart.
+Dashboard 2 & 3 live, drill-through hoạt động
+PHASE 4  ·  W13-16
+AI Layer + Polish + Showcase
+🎯 Phase goals
+Demand forecast
+Anomaly detection
+GitHub + README
+Final demo
+WK
+Focus
+Làm gì
+Done khi
+W13
+Demand forecast
+Prophet model train trên demand_heatmap 30 ngày. Airflow DAG retrain Sunday 2AM. Output → Gold demand_forecast table → Metabase chart.
+Forecast chart live, MAPE < 20%
+W14
+Anomaly detection
+Z-score monitor cancellation_rate + driver_utilization. Ghi alerts vào Postgres. Metabase alert email. Test với data spike giả.
+Alert email demo được, 2 alert rules
+W15
+GitHub + README
+README: badges, architecture diagram (draw.io), quick start 5 bước, GIF screencast. CONTRIBUTING.md. dbt docs deploy.
+GitHub repo public, README điểm 9/10
+W16
+Final demo
+Record screencast 3 phút (pipeline run → dashboard → forecast chart). Viết CV bullets. Prepare 3 interview talking points.
+Demo video + GitHub link + CV ready
+SECTION 5
+Showcase & Interview Prep
+CV bullets, GitHub README, câu hỏi thường gặp
+📁 Cấu trúc GitHub Repository
+rideflow-analytics/
+├── infrastructure/         # Docker Compose, Makefile
+│   ├── airflow/            # Dockerfile (apache/airflow:2.8.1)
+│   ├── spark/              # Dockerfile (với Delta + S3A JARs)
+│   └── jupyter/            # Dockerfile (PySpark + dbt)
+├── data/
+│   ├── generators/
+│   │   └── simulator.py    # ⭐ Incremental simulator với state
+│   ├── raw/trips/          # date=.../hour=.../batch_HHMM.jsonl
+│   └── simulator_state.json
+├── pipelines/              # ⚙️ Data Engineering
+│   ├── dags/
+│   │   └── bronze_trips_ingest.py  # 4-task DAG mỗi 15 phút
+│   ├── bronze/             # GE expectations
+│   └── silver/             # PySpark cleaning jobs
+├── dbt/                    # 📊 Analytics Engineering
+│   ├── models/staging/     # stg_trips, stg_drivers...
+│   ├── models/intermediate/# int_trip_enriched, int_driver_daily...
+│   └── models/marts/       # fact_trips, dim_*, KPI models
+├── ai/                     # 🤖 AI Add-on
+│   ├── forecasting/        # Prophet model + Airflow DAG
+│   └── anomaly/            # Z-score alerting
+├── dashboards/             # Metabase exports (JSON)
+├── docs/                   # Architecture diagram, ADRs
+├── docker-compose.yml      # Full local stack
+├── Makefile                # make up, sim-run, dag-trigger...
+└── README.md               # ← Thứ recruiter thấy đầu tiên
+💼 CV Bullet Points — Copy & Use
+Format: Action verb + Technology + Impact — paste thẳng vào CV
+Built incremental data pipeline processing 50,000+ daily ride-hailing trips via stateful Python simulator (JSONL partitioned by date/hour) + Airflow 4-task DAG, delivering Bronze Delta Lake updates every 15 minutes
+Designed Medallion Architecture (Bronze/Silver/Gold) on MinIO with dbt-managed transformations and 25+ automated schema tests — established single source of truth for 8 operational KPIs including GMV, driver utilization, and cancellation rate
+Implemented demand forecasting using Prophet time-series model (MAPE < 20%) with Airflow weekly retraining pipeline; integrated anomaly detection (Z-score) with automated Metabase email alerts for ops team
+Developed 3 interactive Metabase dashboards (Executive Overview, Driver Scorecard, Demand Heatmap) with city/date drill-through capability, sourced from optimized Delta Lake Gold layer
+Maintained end-to-end data quality framework: Great Expectations at Bronze ingestion, dbt schema tests at Silver/Gold, and pipeline_runs monitoring table tracking freshness SLAs
+🎤 Interview Q&A
+Câu hỏi
+Trả lời — dùng RideFlow
+"Walk me through your pipeline"
+Mở đầu bằng business problem: 'Ops team cần biết realtime demand để dispatch driver.' Rồi: simulator sinh JSONL mỗi 15 phút (stateful — reuse rider/driver IDs) → Airflow DAG 4 tasks → Bronze Delta partition by date/hour → PySpark Silver (incremental) → dbt Gold → Metabase. Nhấn vào: tại sao JSONL thay CSV, tại sao partition by hour.
+"Tại sao JSONL thay vì CSV?"
+CSV không append-friendly — phải đọc lại file cũ để thêm. JSONL: mỗi dòng là 1 JSON object độc lập, append bằng cách ghi thêm dòng. Airflow FileSensor detect file mới không cần scan toàn bộ thư mục. Ngoài ra JSONL có schema embedded — dễ validate từng record.
+"Incremental pipeline hoạt động thế nào?"
+3 tầng: Bronze (append Delta partition mới), Silver (PySpark chỉ đọc partition _date/_hour mới nhất từ Bronze), dbt Gold (incremental model với is_incremental() filter: WHERE request_time > max(request_time) IN target). Mỗi layer chỉ process data mới — không recompute toàn bộ.
+"Tại sao Delta Lake thay vì Parquet thuần?"
+ACID transactions — tránh dirty reads khi Airflow + Spark write đồng thời. Time travel — query data của 3h trước khi debug anomaly. Schema evolution với mergeSchema=true — thêm column mới không cần rewrite. Câu này bạn đã học kỹ từ day06-delta-lake — trả lời tự tin với ví dụ cụ thể.
+"dbt là gì, tại sao không dùng Spark thôi?"
+Spark giỏi heavy lifting (dedup, ML features, UDF). dbt giỏi business logic bằng SQL + built-in testing + auto-generated documentation + lineage graph. Dẫn reviewer xem dbt docs site: thấy lineage từ stg_trips → int_trip_enriched → fact_trips ngay lập tức. Đây là thứ Spark không có.
+"Project nhỏ so với production thật"
+Đồng ý — đây là local dev environment với synthetic data. Nhưng pattern giống production: stateful incremental ingestion, partitioned storage, layered architecture. Scale path rõ ràng: MinIO → S3, local Airflow → MWAA, local Spark → EMR. Interviewer muốn biết bạn hiểu pattern, không phải bạn đang chạy petabyte.
+🚗
+RideFlow — Realistic. Incremental. Portfolio-worthy.
+Incremental simulation với state là điểm khác biệt thực sự — 95% ứng viên chỉ dump CSV một lần.
+16 weekends × ~4-5h = ~70 giờ. Đủ để làm xong và tự hào trình bày trong interview.
