@@ -1,30 +1,56 @@
 
-    -- back compat for old kwarg name
   
-  
-  
+    
+        create or replace table gold.dim_zone
       
-          
-              
-              
-          
-              
-              
-          
       
+    using delta
+      
+      
+      
+      
+      
+    location 's3a://rideflow/gold/dim_zone'
+      
+
+      as
+      
+
+WITH zone_data AS (
+    SELECT 
+        pickup_zone AS zone_id,
+        city,
+        AVG(pickup_lat) AS lat,
+        AVG(pickup_lng) AS lng
+    FROM gold.stg_trips
+    WHERE pickup_zone IS NOT NULL
+    GROUP BY pickup_zone, city
+    
+    UNION ALL
+    
+    SELECT 
+        dropoff_zone AS zone_id,
+        city,
+        AVG(dropoff_lat) AS lat,
+        AVG(dropoff_lng) AS lng
+    FROM gold.stg_trips
+    WHERE dropoff_zone IS NOT NULL
+    GROUP BY dropoff_zone, city
+),
+zone_agg AS (
+    SELECT 
+        zone_id,
+        city,
+        AVG(lat) AS lat,
+        AVG(lng) AS lng
+    FROM zone_data
+    GROUP BY zone_id, city
+)
+SELECT 
+    zone_id,
+    city,
+    ROUND(lat, 6) AS lat,
+    ROUND(lng, 6) AS lng,
+    CURRENT_TIMESTAMP() AS last_updated
+FROM zone_agg
   
-
-  
-
-  merge into gold.dim_zone as DBT_INTERNAL_DEST
-      using dim_zone__dbt_tmp as DBT_INTERNAL_SOURCE
-      on 
-                  DBT_INTERNAL_SOURCE.zone_id = DBT_INTERNAL_DEST.zone_id
-               and 
-                  DBT_INTERNAL_SOURCE.city = DBT_INTERNAL_DEST.city
-              
-
-      when matched then update set
-         * 
-
-      when not matched then insert *

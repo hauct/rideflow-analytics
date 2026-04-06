@@ -17,11 +17,6 @@ WITH time_data AS (
         END AS period_of_day
     FROM gold.fact_trips
     
-    WHERE DATE(request_time) >= (
-        SELECT COALESCE(MAX(date), '1970-01-01') 
-        FROM gold.dim_time
-    )
-    
 )
 SELECT 
     time_id,

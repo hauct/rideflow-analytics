@@ -15,11 +15,6 @@ WITH driver_trips AS (
     FROM gold.stg_trips
     WHERE driver_id IS NOT NULL
     
-    AND ingest_date >= (
-        SELECT COALESCE(MAX(last_trip_date), '1970-01-01') 
-        FROM gold.dim_driver
-    )
-    
     GROUP BY driver_id, city
 ),
 driver_ratings AS (

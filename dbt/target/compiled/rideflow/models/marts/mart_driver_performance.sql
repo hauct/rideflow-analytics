@@ -4,11 +4,6 @@ WITH fact_data AS (
     SELECT * FROM gold.fact_trips
     WHERE trip_status = 'completed'
     
-    AND request_date >= (
-        SELECT COALESCE(MAX(request_date), '1970-01-01') 
-        FROM gold.mart_driver_performance
-    )
-    
 )
 
 SELECT

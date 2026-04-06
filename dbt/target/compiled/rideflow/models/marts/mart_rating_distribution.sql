@@ -5,11 +5,6 @@ WITH fact_data AS (
     WHERE trip_status = 'completed'
     AND rider_rating_stars IS NOT NULL
     
-    AND request_date >= (
-        SELECT COALESCE(MAX(request_date), '1970-01-01') 
-        FROM gold.mart_rating_distribution
-    )
-    
 )
 
 SELECT

@@ -1,7 +1,48 @@
 
+  
     
-      insert overwrite table gold.dim_time
-      partition (date)
-    
-    select `time_id`, `date`, `hour`, `minute`, `day_of_week`, `day_of_month`, `month`, `year`, `period_of_day` from dim_time__dbt_tmp
+        create or replace table gold.dim_time
+      
+      
+    using delta
+      
+      
+      partitioned by (date)
+      
+      
+    location 's3a://rideflow/gold/dim_time'
+      
 
+      as
+      
+
+WITH time_data AS (
+    SELECT 
+        DISTINCT
+        request_time AS time_id,
+        DATE(request_time) AS date,
+        HOUR(request_time) AS hour,
+        MINUTE(request_time) AS minute,
+        DAYOFWEEK(request_time) AS day_of_week,
+        DAYOFMONTH(request_time) AS day_of_month,
+        MONTH(request_time) AS month,
+        YEAR(request_time) AS year,
+        CASE 
+            WHEN HOUR(request_time) IN (7,8,9,17,18,19) THEN 'peak'
+            ELSE 'off_peak'
+        END AS period_of_day
+    FROM gold.fact_trips
+    
+)
+SELECT 
+    time_id,
+    date,
+    hour,
+    minute,
+    day_of_week,
+    day_of_month,
+    month,
+    year,
+    period_of_day
+FROM time_data
+  

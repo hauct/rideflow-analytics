@@ -98,6 +98,37 @@ def run_simulator(**context):
     context["ti"].xcom_push(key="target_date", value=target_date)
 
 
+def check_gold_tables_exist(**context):
+    """Check if gold tables already exist in the metastore. Returns branch to take."""
+    import subprocess
+    try:
+        result = subprocess.run(
+            [
+                "docker", "exec", "de-jupyter-spark", "spark-sql",
+                "--master", "spark://spark-master:7077",
+                "--conf", "spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension",
+                "--conf", "spark.sql.catalog.spark_catalog=org.apache.spark.sql.delta.catalog.DeltaCatalog",
+                "--conf", "spark.hadoop.fs.s3a.endpoint=http://minio:9000",
+                "--conf", "spark.hadoop.fs.s3a.access.key=minioadmin",
+                "--conf", "spark.hadoop.fs.s3a.secret.key=minioadmin123",
+                "--conf", "spark.hadoop.fs.s3a.path.style.access=true",
+                "-e", "SHOW TABLES IN gold LIKE 'dim_zone';"
+            ],
+            capture_output=True, text=True, timeout=120
+        )
+        # If the table exists, the output will contain 'dim_zone'
+        if 'dim_zone' in result.stdout.lower() or 'true' in result.stdout.lower():
+            print("[check_gold_tables] ✅ Gold tables exist - using incremental mode")
+            return "dbt_run_gold_incremental"
+        else:
+            print("[check_gold_tables] ⚠️  Gold tables don't exist - using full-refresh")
+            return "dbt_run_gold_full_refresh"
+    except Exception as e:
+        print(f"[check_gold_tables] ⚠️  Error checking tables: {e}")
+        # Default to full-refresh if we can't check
+        return "dbt_run_gold_full_refresh"
+
+
 def log_summary(**context):
     import psycopg2, os
     target_date = context["ti"].xcom_pull(
@@ -208,11 +239,25 @@ docker exec de-spark-master \
     t_cleanse_payments = create_spark_task("cleanse_payments_silver", CLEANSE_PAYMENTS_SCRIPT)
     t_cleanse_ratings = create_spark_task("cleanse_ratings_silver", CLEANSE_RATINGS_SCRIPT)
 
-    # Gold Layer: dbt run
-    t_dbt_run = BashOperator(
-        task_id="dbt_run_gold",
-        bash_command="""docker exec de-jupyter-spark //bin/bash -c "cd /opt/dbt && dbt run" """,
+    # Gold Layer: dbt run with branching for full-refresh vs incremental
+    t_check_gold = BranchPythonOperator(
+        task_id="check_gold_tables",
+        python_callable=check_gold_tables_exist,
         trigger_rule="all_success",
+    )
+
+    # Full-refresh run (first time only)
+    t_dbt_full_refresh = BashOperator(
+        task_id="dbt_run_gold_full_refresh",
+        bash_command="""docker exec de-jupyter-spark //bin/bash -c "cd /opt/dbt && dbt run --full-refresh" """,
+        trigger_rule="none_failed",
+    )
+
+    # Incremental run (subsequent runs - uses merge/upsert)
+    t_dbt_incremental = BashOperator(
+        task_id="dbt_run_gold_incremental",
+        bash_command="""docker exec de-jupyter-spark //bin/bash -c "cd /opt/dbt && dbt run" """,
+        trigger_rule="none_failed",
     )
 
     t_export_gold = BashOperator(
@@ -262,5 +307,7 @@ docker exec de-spark-master \
     t_ingest_payments >> t_cleanse_payments
     t_ingest_ratings >> t_cleanse_ratings
 
-    # Tất cả Silver hoàn tất -> dbt run (Gold Layer) -> Ghi export postgres -> Ghi Log Summary
-    [t_cleanse_trips, t_cleanse_payments, t_cleanse_ratings] >> t_dbt_run >> t_export_gold >> t_summary
+    # Tất cả Silver hoàn tất -> check gold tables -> full-refresh or incremental -> export postgres -> log summary
+    [t_cleanse_trips, t_cleanse_payments, t_cleanse_ratings] >> t_check_gold
+    t_check_gold >> [t_dbt_full_refresh, t_dbt_incremental]
+    [t_dbt_full_refresh, t_dbt_incremental] >> t_export_gold >> t_summary

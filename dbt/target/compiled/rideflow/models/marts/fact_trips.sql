@@ -4,11 +4,6 @@ WITH
 trips AS (
     SELECT * FROM gold.stg_trips
     
-    WHERE ingest_date >= (
-        SELECT COALESCE(MAX(ingest_date), '1970-01-01') 
-        FROM gold.fact_trips
-    )
-    
 ),
 payments AS (
     SELECT * FROM gold.stg_payments

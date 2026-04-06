@@ -3,7 +3,7 @@
     file_format='delta',
     location_root='s3a://rideflow/gold',
     unique_key='trip_id',
-    incremental_strategy='insert_overwrite',
+    incremental_strategy='merge',
     partition_by='ingest_date'
 ) }}
 

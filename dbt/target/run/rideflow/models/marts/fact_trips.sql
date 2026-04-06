@@ -1,7 +1,69 @@
 
+  
     
-      insert overwrite table gold.fact_trips
-      partition (ingest_date)
-    
-    select `trip_id`, `driver_id`, `rider_id`, `trip_status`, `city`, `pickup_zone`, `dropoff_zone`, `request_time`, `pickup_time`, `dropoff_time`, `distance_km`, `duration_min`, `payment_method`, `promo_code`, `base_fare_vnd`, `discount_vnd`, `gmv_vnd`, `platform_revenue_vnd`, `driver_earning_vnd`, `payment_status`, `rider_rating_stars`, `driver_rating_stars`, `request_date`, `request_hour`, `ingest_date` from fact_trips__dbt_tmp
+        create or replace table gold.fact_trips
+      
+      
+    using delta
+      
+      
+      partitioned by (ingest_date)
+      
+      
+    location 's3a://rideflow/gold/fact_trips'
+      
 
+      as
+      
+
+WITH 
+trips AS (
+    SELECT * FROM gold.stg_trips
+    
+),
+payments AS (
+    SELECT * FROM gold.stg_payments
+),
+ratings AS (
+    SELECT * FROM gold.stg_ratings
+)
+
+SELECT
+    t.trip_id,
+    t.driver_id,
+    t.rider_id,
+    t.status AS trip_status,
+    t.city,
+    t.pickup_zone,
+    t.dropoff_zone,
+    t.request_time,
+    t.pickup_time,
+    t.dropoff_time,
+    t.distance_km,
+    t.duration_min,
+    
+    -- Payment metrics
+    p.payment_method,
+    p.promo_code,
+    COALESCE(p.fare_vnd, t.fare_vnd) AS base_fare_vnd,
+    COALESCE(p.discount_vnd, 0) AS discount_vnd,
+    COALESCE(p.final_amount_vnd, t.fare_vnd) AS gmv_vnd,
+    COALESCE(p.platform_fee_vnd, CAST(t.fare_vnd * 0.2 AS INT)) AS platform_revenue_vnd,
+    COALESCE(p.driver_earning_vnd, CAST(t.fare_vnd * 0.8 AS INT)) AS driver_earning_vnd,
+    p.payment_status,
+    
+    -- Ratings
+    rr.stars AS rider_rating_stars,
+    rd.stars AS driver_rating_stars,
+    
+    -- Derived dimensional info
+    DATE(t.request_time) AS request_date,
+    HOUR(t.request_time) AS request_hour,
+    
+    t.ingest_date
+
+FROM trips t
+LEFT JOIN payments p ON t.trip_id = p.trip_id
+LEFT JOIN ratings rr ON t.trip_id = rr.trip_id AND rr.rater_type = 'rider'
+LEFT JOIN ratings rd ON t.trip_id = rd.trip_id AND rd.rater_type = 'driver'
+  

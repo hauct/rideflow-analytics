@@ -1,7 +1,45 @@
 
+  
     
-      insert overwrite table gold.mart_driver_performance
-      partition (year_week)
-    
-    select `year_week`, `year`, `week_number`, `driver_id`, `city`, `request_date`, `trips_completed`, `total_distance_km`, `total_duration_min`, `weekly_earnings_vnd`, `avg_stars_received`, `total_ratings_received` from mart_driver_performance__dbt_tmp
+        create or replace table gold.mart_driver_performance
+      
+      
+    using delta
+      
+      
+      partitioned by (year_week)
+      
+      
+    location 's3a://rideflow/gold/mart_driver_performance'
+      
 
+      as
+      
+
+WITH fact_data AS (
+    SELECT * FROM gold.fact_trips
+    WHERE trip_status = 'completed'
+    
+)
+
+SELECT
+    YEAR(request_time) * 100 + WEEKOFYEAR(request_time) AS year_week,
+    YEAR(request_time) AS year,
+    WEEKOFYEAR(request_time) AS week_number,
+    driver_id,
+    city,
+    MIN(request_date) AS request_date,
+    COUNT(trip_id) AS trips_completed,
+    SUM(distance_km) AS total_distance_km,
+    SUM(duration_min) AS total_duration_min,
+    SUM(driver_earning_vnd) AS weekly_earnings_vnd,
+    AVG(rider_rating_stars) AS avg_stars_received,
+    COUNT(rider_rating_stars) AS total_ratings_received
+FROM fact_data
+GROUP BY 
+    YEAR(request_time) * 100 + WEEKOFYEAR(request_time),
+    YEAR(request_time),
+    WEEKOFYEAR(request_time),
+    driver_id,
+    city
+  

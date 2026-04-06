@@ -1,7 +1,40 @@
 
+  
     
-      insert overwrite table gold.demand_heatmap
-      partition (request_date)
-    
-    select `request_date`, `request_hour`, `pickup_zone`, `city`, `trip_count`, `completed_trips`, `cancelled_trips`, `avg_distance_km`, `avg_duration_min` from demand_heatmap__dbt_tmp
+        create or replace table gold.demand_heatmap
+      
+      
+    using delta
+      
+      
+      partitioned by (request_date)
+      
+      
+    location 's3a://rideflow/gold/demand_heatmap'
+      
 
+      as
+      
+
+WITH fact_data AS (
+    SELECT * FROM gold.fact_trips
+    
+)
+
+SELECT
+    DATE(request_time) AS request_date,
+    HOUR(request_time) AS request_hour,
+    pickup_zone,
+    city,
+    COUNT(trip_id) AS trip_count,
+    SUM(CASE WHEN trip_status = 'completed' THEN 1 ELSE 0 END) AS completed_trips,
+    SUM(CASE WHEN trip_status = 'cancelled' THEN 1 ELSE 0 END) AS cancelled_trips,
+    AVG(distance_km) AS avg_distance_km,
+    AVG(duration_min) AS avg_duration_min
+FROM fact_data
+GROUP BY 
+    DATE(request_time),
+    HOUR(request_time),
+    pickup_zone,
+    city
+  

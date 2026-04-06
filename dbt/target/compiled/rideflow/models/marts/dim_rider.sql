@@ -14,11 +14,6 @@ WITH rider_trips AS (
     FROM gold.stg_trips
     WHERE rider_id IS NOT NULL
     
-    AND ingest_date >= (
-        SELECT COALESCE(MAX(last_trip_date), '1970-01-01') 
-        FROM gold.dim_rider
-    )
-    
     GROUP BY rider_id, city
 ),
 rider_payments AS (
